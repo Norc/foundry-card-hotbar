@@ -101,42 +101,6 @@ async function cardHotbarInit() {
   });
 
   await ui.cardHotbar.render(true, obj);
-
-  window.addEventListener('keydown', (e) => {
-    console.debug(`card Hotbar | Event keycode is ${e.which}`);
-    
-    //add Shift-digit keybinding to fire macros on card Hotbar
-    if( (48 <= e.which && e.which <= 57)  && e.shiftKey && !e.ctrlKey && chbKeyEnabled) {
-      const num = parseInt(e.code.slice(e.code.length -1));
-      console.debug(`card Hotbar | You pressed shift and ${num} on a ${e.target.tagName}`);
-      //disable firing macro on keystrokes meant to enter text
-      if (e.target.tagName == "INPUT" || e.target.tagName == "TEXTAREA") {
-        console.debug("card Hotbar | Preventing keybind, invalid target.");
-        return;
-      }
-      //translate valid keypress into slot number
-      const slot = ui.cardHotbar.macros.find(m => m.key === num);
-      if ( ui.cardHotbar.macros[num] ) slot.macro.execute();
-      return false;
-    }
-  
-    //add ctrl-digit keybinding to change macro page
-    if( (49 <= e.which && e.which <= 53)  && e.ctrlKey && e.shiftKey && hotbarPageKeyEnabled) {
-      //when pages added to card Hotbar, extend to captuer 6-10 presses to change that page also?
-      const num = parseInt(e.code.slice(e.code.length -1));
-      console.debug(`card Hotbar | You pressed control and shift and ${num} on a ${e.target.tagName}`);
-      //disable firing macro on keystrokes meant to enter text
-      if (e.target.tagName == "INPUT" || e.target.tagName == "TEXTAREA") {
-        console.debug("card Hotbar | Preventing keybind, invalid target.");
-        return;
-      }
-      //translate valid keypress into core hotbar page change
-      console.debug(`card Hotbar | Attempting to set page to ${num}`);
-      ui.hotbar.page=num;
-      ui.hotbar.render();
-      return false;
-    }
-  });
 }
 
 Hooks.on("init", async () => {
