@@ -1,7 +1,5 @@
 import { cardHotbarSettingsForm } from './card-hotbar-settings-form.js';
-import { CoreHotbarSettingsForm } from './core-hotbar-settings-form.js';
 import { cardHotbarFlagsForm } from './card-hotbar-flags-form.js';
-import { CoreHotbarFlagsForm } from './core-hotbar-flags-form.js';
 
 export class cardHotbarSettings {
     /**
@@ -15,14 +13,6 @@ export class cardHotbarSettings {
             label: 'Global card Hotbar',
             icon: 'fas fa-bars',
             type: cardHotbarSettingsForm,
-            restricted: true
-        });
-
-        game.settings.registerMenu("card-hotbar", 'coreSettingsMenu', {
-            name: '(𝗚𝗠 𝗢𝗻𝗹𝘆) Default Core Foundry Hotbar Settings for All Users',
-            label: 'Global Core Hotbar',
-            icon: 'fas fa-minus',
-            type: CoreHotbarSettingsForm,
             restricted: true
         });
 
@@ -51,14 +41,6 @@ export class cardHotbarSettings {
             restricted: false
         });
 
-        game.settings.registerMenu("card-hotbar", 'coreFlagsMenu', {
-            name: 'Your Core Foundry Hotbar Settings',
-            label: 'Your Core Hotbar',
-            icon: 'fas fa-minus',
-            type: CoreHotbarFlagsForm,
-            restricted: false
-        });
-    
         //TO DO: add hotbarPageKeyEnabled and chbKeyEnabled
     
     //card HOTBAR SETTINGS    
