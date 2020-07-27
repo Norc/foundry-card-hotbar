@@ -1,12 +1,12 @@
-import { CustomHotbarPopulator }  from './scripts/custom-hotbar-populator.js';
-import { CustomHotbar }  from './custom-hotbar.js';
-import { CustomHotbarSettings } from './scripts/custom-hotbar-settings.js';
+import { cardHotbarPopulator }  from './scripts/card-hotbar-populator.js';
+import { cardHotbar }  from './card-hotbar.js';
+import { cardHotbarSettings } from './scripts/card-hotbar-settings.js';
 
-async function customHotbarInit() {
-  console.debug("Custom Hotbar | Initializing...");
-  window.customHotbar = new CustomHotbarPopulator();
-  ui.customHotbar = new CustomHotbar(window.customHotbar);
-  ui.customHotbar.macros = ui.customHotbar.getData();
+async function cardHotbarInit() {
+  console.debug("card Hotbar | Initializing...");
+  window.cardHotbar = new cardHotbarPopulator();
+  ui.cardHotbar = new cardHotbar(window.cardHotbar);
+  ui.cardHotbar.macros = ui.cardHotbar.getData();
   let obj = {
       left: 100,
       top: 100,
@@ -14,77 +14,77 @@ async function customHotbarInit() {
       height: 52,
       scale: 1.0,
       log: true,
-      renderContext: "custom-hotbar",
+      renderContext: "card-hotbar",
       renderData: "init"
   };
 
 
-  CustomHotbarSettings.register();
+  cardHotbarSettings.register();
 
-  //apply settings styles, first for custom hotbar, then for core hotbar
+  //apply settings styles, first for card hotbar, then for core hotbar
   //For each setting, use flag if present, otherwise use game setting.
 
    var css =
-      '#custom-hotbar' 
-    + ` { bottom: ${CustomHotbarSettings.getCHBYPos()}px; ` 
-    + `   left: ${CustomHotbarSettings.getCHBXPos()}px; `
+      '#card-hotbar' 
+    + ` { bottom: ${cardHotbarSettings.getCHBYPos()}px; ` 
+    + `   left: ${cardHotbarSettings.getCHBXPos()}px; `
     + ' }'
 
-    + '#custom-hotbar #custom-macro-list' 
+    + '#card-hotbar #card-macro-list' 
     + ` {` 
-    + `   border: 1px solid ${CustomHotbarSettings.getCHBBorderColor()};`
+    + `   border: 1px solid ${cardHotbarSettings.getCHBBorderColor()};`
     + ' }'
     
-    + '#custom-hotbar .bar-controls' 
-    + ` { background: ${CustomHotbarSettings.getCHBPrimaryColor()};` 
-    + `   border: 1px solid ${CustomHotbarSettings.getCHBBorderColor()};`
+    + '#card-hotbar .bar-controls' 
+    + ` { background: ${cardHotbarSettings.getCHBPrimaryColor()};` 
+    + `   border: 1px solid ${cardHotbarSettings.getCHBBorderColor()};`
     + ' }'
 
-    + '#custom-hotbar .macro' 
-    + ` { background: ${CustomHotbarSettings.getCHBPrimaryColor()};` 
-    + `   border: 1px solid ${CustomHotbarSettings.getCHBBorderColor()};`
+    + '#card-hotbar .macro' 
+    + ` { background: ${cardHotbarSettings.getCHBPrimaryColor()};` 
+    + `   border: 1px solid ${cardHotbarSettings.getCHBBorderColor()};`
     + ' }'
 
-    + '#custom-hotbar .macro.active:hover' 
+    + '#card-hotbar .macro.active:hover' 
     + ' {' 
-    + `     border: 1px solid ${CustomHotbarSettings.getCHBBorderColorActive()};`
+    + `     border: 1px solid ${cardHotbarSettings.getCHBBorderColorActive()};`
     + ' }'
 
-    + '#custom-hotbar .macro.inactive:hover' 
+    + '#card-hotbar .macro.inactive:hover' 
     + ' {' 
-    + `     border: 1px solid ${CustomHotbarSettings.getCHBBorderColorInactive()};`
+    + `     border: 1px solid ${cardHotbarSettings.getCHBBorderColorInactive()};`
     + ' }'
 
 
 
     + '#hotbar' 
-    + ` { bottom: ${CustomHotbarSettings.getCoreYPos()}px; ` 
-    + `   left: ${CustomHotbarSettings.getCoreXPos()}px; `
+    + ` { bottom: ${cardHotbarSettings.getCoreYPos()}px; ` 
+    + `   left: ${cardHotbarSettings.getCoreXPos()}px; `
     + ' }'
 
-    + '#hotbar #custom-macro-list' 
+    + '#hotbar #card-macro-list' 
     + ` {` 
-    + `   border: 1px solid ${CustomHotbarSettings.getCoreBorderColor()};`
+    + `   border: 1px solid ${cardHotbarSettings.getCoreBorderColor()};`
     + ' }'
     
     + '#hotbar .bar-controls' 
-    + ` { background: ${CustomHotbarSettings.getCorePrimaryColor()};` 
-    + `   border: 1px solid ${CustomHotbarSettings.getCoreBorderColor()};`
+    + ` { background: ${cardHotbarSettings.getCorePrimaryColor()};` 
+    + `   border: 1px solid ${cardHotbarSettings.getCoreBorderColor()};`
     + ' }'
 
     + '#hotbar .macro' 
-    + ` { background: ${CustomHotbarSettings.getCorePrimaryColor()};` 
-    + `   border: 1px solid ${CustomHotbarSettings.getCoreBorderColor()};`
+    + ` { background: ${cardHotbarSettings.getCorePrimaryColor()};` 
+    + `   border: 1px solid ${cardHotbarSettings.getCoreBorderColor()};`
     + ' }'
 
     + '#hotbar .macro.active:hover' 
     + ' {' 
-    + `     border: 1px solid ${CustomHotbarSettings.getCoreBorderColorActive()};`
+    + `     border: 1px solid ${cardHotbarSettings.getCoreBorderColorActive()};`
     + ' }'
 
     + '#hotbar .macro.inactive:hover' 
     + ' {' 
-    + `     border: 1px solid ${CustomHotbarSettings.getCoreBorderColorInactive()};`
+    + `     border: 1px solid ${cardHotbarSettings.getCoreBorderColorInactive()};`
     + ' }'
   , head = document.head || document.getElementsByTagName('head')[0]
   , style = document.createElement('style');
@@ -100,38 +100,38 @@ async function customHotbarInit() {
     element.ondragend = ui.hotbar._onDrop;
   });
 
-  await ui.customHotbar.render(true, obj);
+  await ui.cardHotbar.render(true, obj);
 
   window.addEventListener('keydown', (e) => {
-    console.debug(`Custom Hotbar | Event keycode is ${e.which}`);
+    console.debug(`card Hotbar | Event keycode is ${e.which}`);
     
-    //add Shift-digit keybinding to fire macros on Custom Hotbar
+    //add Shift-digit keybinding to fire macros on card Hotbar
     if( (48 <= e.which && e.which <= 57)  && e.shiftKey && !e.ctrlKey && chbKeyEnabled) {
       const num = parseInt(e.code.slice(e.code.length -1));
-      console.debug(`Custom Hotbar | You pressed shift and ${num} on a ${e.target.tagName}`);
+      console.debug(`card Hotbar | You pressed shift and ${num} on a ${e.target.tagName}`);
       //disable firing macro on keystrokes meant to enter text
       if (e.target.tagName == "INPUT" || e.target.tagName == "TEXTAREA") {
-        console.debug("Custom Hotbar | Preventing keybind, invalid target.");
+        console.debug("card Hotbar | Preventing keybind, invalid target.");
         return;
       }
       //translate valid keypress into slot number
-      const slot = ui.customHotbar.macros.find(m => m.key === num);
-      if ( ui.customHotbar.macros[num] ) slot.macro.execute();
+      const slot = ui.cardHotbar.macros.find(m => m.key === num);
+      if ( ui.cardHotbar.macros[num] ) slot.macro.execute();
       return false;
     }
   
     //add ctrl-digit keybinding to change macro page
     if( (49 <= e.which && e.which <= 53)  && e.ctrlKey && e.shiftKey && hotbarPageKeyEnabled) {
-      //when pages added to Custom Hotbar, extend to captuer 6-10 presses to change that page also?
+      //when pages added to card Hotbar, extend to captuer 6-10 presses to change that page also?
       const num = parseInt(e.code.slice(e.code.length -1));
-      console.debug(`Custom Hotbar | You pressed control and shift and ${num} on a ${e.target.tagName}`);
+      console.debug(`card Hotbar | You pressed control and shift and ${num} on a ${e.target.tagName}`);
       //disable firing macro on keystrokes meant to enter text
       if (e.target.tagName == "INPUT" || e.target.tagName == "TEXTAREA") {
-        console.debug("Custom Hotbar | Preventing keybind, invalid target.");
+        console.debug("card Hotbar | Preventing keybind, invalid target.");
         return;
       }
       //translate valid keypress into core hotbar page change
-      console.debug(`Custom Hotbar | Attempting to set page to ${num}`);
+      console.debug(`card Hotbar | Attempting to set page to ${num}`);
       ui.hotbar.page=num;
       ui.hotbar.render();
       return false;
@@ -150,16 +150,16 @@ Hooks.on("init", async () => {
 
 Hooks.once("renderHotbar", async () => {
 
-  await customHotbarInit();
+  await cardHotbarInit();
 
 });
 
 Hooks.on("renderHotbar", async () => {
-  console.debug("Custom Hotbar | The core hotbar just rendered!");
+  console.debug("card Hotbar | The core hotbar just rendered!");
 });
 
-Hooks.on("renderCustomHotbar", async () => {
-  console.debug("Custom Hotbar | The custom hotbar just rendered!");
+Hooks.on("rendercardHotbar", async () => {
+  console.debug("card Hotbar | The card hotbar just rendered!");
 });
 
 
@@ -173,14 +173,14 @@ Hooks.once('ready', () => {
   //make sure that the init was called if renderHotbar hook failed to trigger properly
   //A workaround for Firefox compatibility currently while keeping PopOut module compatibility.
   let hotbarTest = ui.hotbar;
-  let chbTest = ui.CustomHotbar;  
-  console.debug("Custom Hotbar | hotbarTest and chbTest?");
+  let chbTest = ui.cardHotbar;  
+  console.debug("card Hotbar | hotbarTest and chbTest?");
   console.debug(hotbarTest);
   console.debug(chbTest);
 
  
   if ( hotbarTest && !chbTest ) {
-    customHotbarInit();
+    cardHotbarInit();
   }
 
 
@@ -188,10 +188,10 @@ Hooks.once('ready', () => {
 
 
 Hooks.on("renderSettingsConfig", async () => {
-  //add CSS ids and classes to CustomHotbar settings section for styling
+  //add CSS ids and classes to cardHotbar settings section for styling
   let settingsDiv = document.getElementById("client-settings");
   
-  let chbSetDiv = $( `#${settingsDiv.id} div h2.module-header:contains("Custom Hotbar")` ).next();
+  let chbSetDiv = $( `#${settingsDiv.id} div h2.module-header:contains("card Hotbar")` ).next();
   $(chbSetDiv).addClass('chb-setting');
   $(chbSetDiv).addClass('chb-global');
   $(chbSetDiv).attr('id', 'chbSetDiv');

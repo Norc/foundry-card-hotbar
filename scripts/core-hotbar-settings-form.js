@@ -11,7 +11,7 @@ export class CoreHotbarSettingsForm extends FormApplication {
         return mergeObject(super.defaultOptions, {
             id: "core-hotbar-settings-form",
             title: "(𝗚𝗠 𝗢𝗻𝗹𝘆) Set Default Global Core Hotbar",
-            template: "./modules/custom-hotbar/templates/coreHotbarSettings.html",
+            template: "./modules/card-hotbar/templates/coreHotbarSettings.html",
             classes: ["sheet"],
             width: 500,
             closeOnSubmit: true
@@ -20,23 +20,23 @@ export class CoreHotbarSettingsForm extends FormApplication {
 
     getData() {
         let data = {        
-            corePrimaryColor: game.settings.get("custom-hotbar", "corePrimaryColor"), 
-            coreBorderColor: game.settings.get("custom-hotbar", "coreBorderColor"),
-            coreBorderColorActive: game.settings.get("custom-hotbar", "coreBorderColorActive"),
-            coreBorderColorInactive: game.settings.get("custom-hotbar", "coreBorderColorInactive"),
+            corePrimaryColor: game.settings.get("card-hotbar", "corePrimaryColor"), 
+            coreBorderColor: game.settings.get("card-hotbar", "coreBorderColor"),
+            coreBorderColorActive: game.settings.get("card-hotbar", "coreBorderColorActive"),
+            coreBorderColorInactive: game.settings.get("card-hotbar", "coreBorderColorInactive"),
 
-            coreXPos: game.settings.get("custom-hotbar", "coreXPos"),
-            coreYPos: game.settings.get("custom-hotbar", "coreYPos")
+            coreXPos: game.settings.get("card-hotbar", "coreXPos"),
+            coreYPos: game.settings.get("card-hotbar", "coreYPos")
         };
         if (this.reset == true) {
             data = {    
-                corePrimaryColor: game.settings.settings.get("custom-hotbar.corePrimaryColor").default,
-                coreBorderColor: game.settings.settings.get("custom-hotbar.coreBorderColor").default,
-                coreBorderColorActive: game.settings.settings.get("custom-hotbar.coreBorderColorActive").default,
-                coreBorderColorInactive: game.settings.settings.get("custom-hotbar.coreBorderColorInactive").default,
+                corePrimaryColor: game.settings.settings.get("card-hotbar.corePrimaryColor").default,
+                coreBorderColor: game.settings.settings.get("card-hotbar.coreBorderColor").default,
+                coreBorderColorActive: game.settings.settings.get("card-hotbar.coreBorderColorActive").default,
+                coreBorderColorInactive: game.settings.settings.get("card-hotbar.coreBorderColorInactive").default,
 
-                coreXPos: game.settings.settings.get("custom-hotbar.coreXPos").default,
-                coreYPos: game.settings.settings.get("custom-hotbar.coreYPos").default
+                coreXPos: game.settings.settings.get("card-hotbar.coreXPos").default,
+                coreYPos: game.settings.settings.get("card-hotbar.coreYPos").default
             };
         }
         this.render;
@@ -55,45 +55,45 @@ export class CoreHotbarSettingsForm extends FormApplication {
      */
 
     async _updateObject(e, d) {
-        console.debug("Custom Hotbar | Attempting to update settings with form values...");
-        game.settings.set("custom-hotbar", "corePrimaryColor", d.corePrimaryColor);
-        game.settings.set("custom-hotbar", "coreBorderColor", d.coreBorderColor);
-        game.settings.set("custom-hotbar", "coreBorderColorActive", d.coreBorderColorActive);
-        game.settings.set("custom-hotbar", "coreBorderColorInactive", d.coreBorderColorInactive);
-        game.settings.set("custom-hotbar", "coreXPos", d.coreXPos);
-        game.settings.set("custom-hotbar", "coreYPos", d.coreYPos);
+        console.debug("card Hotbar | Attempting to update settings with form values...");
+        game.settings.set("card-hotbar", "corePrimaryColor", d.corePrimaryColor);
+        game.settings.set("card-hotbar", "coreBorderColor", d.coreBorderColor);
+        game.settings.set("card-hotbar", "coreBorderColorActive", d.coreBorderColorActive);
+        game.settings.set("card-hotbar", "coreBorderColorInactive", d.coreBorderColorInactive);
+        game.settings.set("card-hotbar", "coreXPos", d.coreXPos);
+        game.settings.set("card-hotbar", "coreYPos", d.coreYPos);
         this.render();
         ui.notifications.notify("Saving... Please refresh Foundry to apply changes.");                                                     
     }
 
     onReset() {
-        console.debug("Custom Hotbar | Attempting to reset coreSettingsForm to defaults");
+        console.debug("card Hotbar | Attempting to reset coreSettingsForm to defaults");
         this.reset = true;
         this.render();
     }
 
     onCorePrimaryColorClick() {
-        console.debug("Custom Hotbar | corePrimaryColor button click detected");
+        console.debug("card Hotbar | corePrimaryColor button click detected");
         $( event.target ).addClass("expanded");
     }
 
     onCoreBorderColorClick() {
-        console.debug("Custom Hotbar | coreBorderColor button click detected");
+        console.debug("card Hotbar | coreBorderColor button click detected");
         $( event.target ).addClass("expanded");
     }
 
     onCoreBorderColorActiveClick() {
-        console.debug("Custom Hotbar | coreBorderColorActive button click detected");
+        console.debug("card Hotbar | coreBorderColorActive button click detected");
         $( event.target ).addClass("expanded");
     }
 
     onCoreBorderColorInactiveClick() {
-        console.debug("Custom Hotbar | coreBorderColorInactive button click detected");
+        console.debug("card Hotbar | coreBorderColorInactive button click detected");
         $( event.target ).addClass("expanded");
     }
 
     activateListeners(html) {
-        console.debug("Custom Hotbar | Attempting to activate Core Settings Form listeners");
+        console.debug("card Hotbar | Attempting to activate Core Settings Form listeners");
         super.activateListeners(html);
         //bind buttons and inputs 
         html.find('button[name="reset"]').on('click', this.onReset.bind(this));
@@ -106,7 +106,7 @@ export class CoreHotbarSettingsForm extends FormApplication {
 }
 
 Hooks.on("renderCoreHotbarSettingsForm", (a, b, c) => {
-    console.debug( "Custom Hotbar | Initializing current color values..." );
+    console.debug( "card Hotbar | Initializing current color values..." );
     $( "#corePrimaryColorSplash" ).css("background-color", c.corePrimaryColor);
     $( "#coreBorderColorSplash" ).css("background-color", c.coreBorderColor);
     $( "#coreBorderColorActiveSplash" ).css("background-color", c.coreBorderColorActive);
@@ -114,7 +114,7 @@ Hooks.on("renderCoreHotbarSettingsForm", (a, b, c) => {
 });
 
 Hooks.on("pickerDone", (parentDiv, hexColor) => {
-    console.debug("Custom Hotbar | pickerDone hook detected");
+    console.debug("card Hotbar | pickerDone hook detected");
     $( parentDiv ).find("input").removeClass("expanded");
     $( parentDiv ).css("background-color", hexColor);
 });

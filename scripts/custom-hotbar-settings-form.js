@@ -1,4 +1,4 @@
-export class CustomHotbarSettingsForm extends FormApplication {
+export class cardHotbarSettingsForm extends FormApplication {
 
     constructor(object, options = {}) {
         super(object, options);
@@ -9,9 +9,9 @@ export class CustomHotbarSettingsForm extends FormApplication {
     */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            id: "custom-hotbar-settings-form",
-            title: "(𝗚𝗠 𝗢𝗻𝗹𝘆) Set Default Global Custom Hotbar",
-            template: "./modules/custom-hotbar/templates/customHotbarSettings.html",
+            id: "card-hotbar-settings-form",
+            title: "(𝗚𝗠 𝗢𝗻𝗹𝘆) Set Default Global card Hotbar",
+            template: "./modules/card-hotbar/templates/cardHotbarSettings.html",
             classes: ["sheet"],
             width: 500,
             closeOnSubmit: true
@@ -20,23 +20,23 @@ export class CustomHotbarSettingsForm extends FormApplication {
 
     getData() {
         let data = {        
-            chbPrimaryColor: game.settings.get("custom-hotbar", "chbPrimaryColor"), 
-            chbBorderColor: game.settings.get("custom-hotbar", "chbBorderColor"),
-            chbBorderColorActive: game.settings.get("custom-hotbar", "chbBorderColorActive"),
-            chbBorderColorInactive: game.settings.get("custom-hotbar", "chbBorderColorInactive"),
+            chbPrimaryColor: game.settings.get("card-hotbar", "chbPrimaryColor"), 
+            chbBorderColor: game.settings.get("card-hotbar", "chbBorderColor"),
+            chbBorderColorActive: game.settings.get("card-hotbar", "chbBorderColorActive"),
+            chbBorderColorInactive: game.settings.get("card-hotbar", "chbBorderColorInactive"),
 
-            chbXPos: game.settings.get("custom-hotbar", "chbXPos"),
-            chbYPos: game.settings.get("custom-hotbar", "chbYPos")
+            chbXPos: game.settings.get("card-hotbar", "chbXPos"),
+            chbYPos: game.settings.get("card-hotbar", "chbYPos")
         };
         if (this.reset == true) {
             data = {    
-                chbPrimaryColor: game.settings.settings.get("custom-hotbar.chbPrimaryColor").default,
-                chbBorderColor: game.settings.settings.get("custom-hotbar.chbBorderColor").default,
-                chbBorderColorActive: game.settings.settings.get("custom-hotbar.chbBorderColorActive").default,
-                chbBorderColorInactive: game.settings.settings.get("custom-hotbar.chbBorderColorInactive").default,
+                chbPrimaryColor: game.settings.settings.get("card-hotbar.chbPrimaryColor").default,
+                chbBorderColor: game.settings.settings.get("card-hotbar.chbBorderColor").default,
+                chbBorderColorActive: game.settings.settings.get("card-hotbar.chbBorderColorActive").default,
+                chbBorderColorInactive: game.settings.settings.get("card-hotbar.chbBorderColorInactive").default,
 
-                chbXPos: game.settings.settings.get("custom-hotbar.chbXPos").default,
-                chbYPos: game.settings.settings.get("custom-hotbar.chbYPos").default
+                chbXPos: game.settings.settings.get("card-hotbar.chbXPos").default,
+                chbYPos: game.settings.settings.get("card-hotbar.chbYPos").default
             };
         }
         this.render;
@@ -54,25 +54,25 @@ export class CustomHotbarSettingsForm extends FormApplication {
      *  'key':entry.metadata.package+'.'+entry.metadata.name
      */
     async _updateObject(e, d) {
-        console.debug("Custom Hotbar | Attempting to update settings with form values...");
-        game.settings.set("custom-hotbar", "chbPrimaryColor", d.chbPrimaryColor);
-        game.settings.set("custom-hotbar", "chbBorderColor", d.chbBorderColor);
-        game.settings.set("custom-hotbar", "chbBorderColorActive", d.chbBorderColorActive);
-        game.settings.set("custom-hotbar", "chbBorderColorInactive", d.chbBorderColorInactive);
-        game.settings.set("custom-hotbar","chbXPos", d.chbXPos);
-        game.settings.set("custom-hotbar","chbYPos", d.chbYPos);
+        console.debug("card Hotbar | Attempting to update settings with form values...");
+        game.settings.set("card-hotbar", "chbPrimaryColor", d.chbPrimaryColor);
+        game.settings.set("card-hotbar", "chbBorderColor", d.chbBorderColor);
+        game.settings.set("card-hotbar", "chbBorderColorActive", d.chbBorderColorActive);
+        game.settings.set("card-hotbar", "chbBorderColorInactive", d.chbBorderColorInactive);
+        game.settings.set("card-hotbar","chbXPos", d.chbXPos);
+        game.settings.set("card-hotbar","chbYPos", d.chbYPos);
         this.render();
         ui.notifications.notify("Saving... Please refresh Foundry to apply changes.");                                                     
     }
 
     onReset() {
-        console.debug("Custom Hotbar | Attempting to reset chbSettingsForm to defaults");
+        console.debug("card Hotbar | Attempting to reset chbSettingsForm to defaults");
         this.reset = true;
         this.render();
     }
 
     onChbPrimaryColorClick() {
-        console.debug("Custom Hotbar | chbPrimaryColor button click detected");
+        console.debug("card Hotbar | chbPrimaryColor button click detected");
         $( event.target ).addClass("expanded");
         //$( event.target ).prop( "disabled", true );
  
@@ -81,22 +81,22 @@ $( "#x" ).prop( "disabled", false );
     }
 
     onChbBorderColorClick() {
-        console.debug("Custom Hotbar | chbBorderColor button click detected");
+        console.debug("card Hotbar | chbBorderColor button click detected");
         $( event.target ).addClass("expanded");
     }
 
     onChbBorderColorActiveClick() {
-        console.debug("Custom Hotbar | chbBorderColorActive button click detected");
+        console.debug("card Hotbar | chbBorderColorActive button click detected");
         $( event.target ).addClass("expanded");
     }
 
     onChbBorderColorInactiveClick() {
-        console.debug("Custom Hotbar | chbBorderColorInactive button click detected");
+        console.debug("card Hotbar | chbBorderColorInactive button click detected");
         $( event.target ).addClass("expanded");
     }
 
     activateListeners(html) {
-        console.debug("Custom Hotbar | Attempting to activate CHB Settings Form listeners");
+        console.debug("card Hotbar | Attempting to activate CHB Settings Form listeners");
         super.activateListeners(html);
         //bind buttons and inputs 
         html.find('button[name="reset"]').on('click', this.onReset.bind(this));
@@ -108,8 +108,8 @@ $( "#x" ).prop( "disabled", false );
     }
 }
 
-Hooks.on("renderCustomHotbarSettingsForm", (a, b, c) => {
-    console.debug( "Custom Hotbar | Initializing current color values..." );
+Hooks.on("rendercardHotbarSettingsForm", (a, b, c) => {
+    console.debug( "card Hotbar | Initializing current color values..." );
     $( "#chbPrimaryColorSplash" ).css("background-color", c.chbPrimaryColor);
     $( "#chbBorderColorSplash" ).css("background-color", c.chbBorderColor);
     $( "#chbBorderColorActiveSplash" ).css("background-color", c.chbBorderColorActive);
@@ -117,7 +117,7 @@ Hooks.on("renderCustomHotbarSettingsForm", (a, b, c) => {
 });
 
 Hooks.on("pickerDone", (parentDiv, hexColor) => {
-    console.debug("Custom Hotbar | pickerDone hook detected");
+    console.debug("card Hotbar | pickerDone hook detected");
     $( parentDiv ).find("input").removeClass("expanded");
     //$( parentDiv ).find("input").prop( "disabled", true );
     $( parentDiv ).css("background-color", hexColor);

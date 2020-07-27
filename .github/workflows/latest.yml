@@ -1,4 +1,4 @@
-name: Latest Custom Hotbar CI
+name: Latest card Hotbar CI
 
 on:
   push:
@@ -20,5 +20,5 @@ jobs:
         draft: false
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: './module.json,./custom-hotbar.zip'
+        artifacts: './module.json,./card-hotbar.zip'
         tag: latest

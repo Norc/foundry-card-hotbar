@@ -1,40 +1,40 @@
 {
-    "customHotbar": {
+    "cardHotbar": {
         
         "general": {
-            "modname": "Custom Hotbar",
-            "mod": "custom-hotbar"
+            "modname": "card Hotbar",
+            "mod": "card-hotbar"
         },
 
         "config": {
-            "chbTitle": "Custom Hotbar Settings",
+            "chbTitle": "card Hotbar Settings",
             "chbCoreTitle": "Core Hotbar Modification Settings"
         },
 
         "settings": {
             
             "chbPrimaryColor": {
-                "name": "Custom Hotbar Color:",
+                "name": "card Hotbar Color:",
                 "nameHint": "Background color for the extra hotbar added by this module."
             },
             "chbBorderColor": {
-                "name": "Custom Hotbar Border Color:",
-                "nameHint": "Border color of each macro on the Custom Hotbar."
+                "name": "card Hotbar Border Color:",
+                "nameHint": "Border color of each macro on the card Hotbar."
             },
             "chbBorderColorActive": {
-                "name": "Custom Hotbar Highlight Color:",
+                "name": "card Hotbar Highlight Color:",
                 "nameHint": "Border color of macro when hovered."
             },
             "chbBorderColorInactive": {
-                "name": "Custom Hotbar Highlight Color (Empty):",
+                "name": "card Hotbar Highlight Color (Empty):",
                 "nameHint": "Border color of empty slot when hovered."
             },
             "chbXPos":{
-                "name": "Custom Hotbar Horizontal Position",
+                "name": "card Hotbar Horizontal Position",
                 "nameHint": "Higher values are further to the right of the screen horizontally."
             },
             "chbYPos":{
-                "name": "Custom Hotbar Vertical Position",
+                "name": "card Hotbar Vertical Position",
                 "nameHint": "Higher values are further up the screen vertically."
             },
 

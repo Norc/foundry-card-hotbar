@@ -1,1 +1,1 @@
-zip -r ./custom-hotbar.zip module.json index.js custom-hotbar-populator.js custom-hotbar.js css/ templates/
+zip -r ./card-hotbar.zip module.json index.js card-hotbar-populator.js card-hotbar.js css/ templates/
