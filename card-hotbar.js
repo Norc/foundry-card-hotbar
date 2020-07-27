@@ -246,6 +246,21 @@ export class cardHotbar extends Hotbar {
     ]);
   }
 
+/* -------------------------------------------- */
+
+  /**
+   * Assign a Macro to a numbered card hotbar slot between 1 and 10
+   * eventually expand this to a full 50 later maybe
+   * @param {Macro|null} macro  The Macro entity to assign
+   * @param {number} slot       The integer Hotbar slot to fill
+   * @param {number} [fromSlot] An optional origin slot from which the Macro is being shifted
+   * @return {Promise}          A Promise which resolves once the User update is complete
+   */
+  async assigncardHotbarJE(je, slot, {fromSlot=null}={}) {
+    console.debug("Card Hotbar | Work some magic here similar to for assignCustomHotbarMacro in previous function.")
+  }
+
+
   	/* -------------------------------------------- */
   /*  Event Listeners and Handlers
 	/* -------------------------------------------- */
@@ -276,11 +291,17 @@ export class cardHotbar extends Hotbar {
     // Allow for a Hook function to handle the event
     let cardSlot = li.dataset.slot;
 
+    //SPACEMANDEV:  The entire purpose of the "mokey hotpatch" here is to convert non-macro drops into macros so that the hotbar can handle them.
+    //              This will not be necessary for us. We will just catch journal etry drops (the last snippet down below) and use
+    //              assignCardHotbarJE to handle journal entries. If we did do some sort of type converting, say if we had cards on the Canvas as Tiles,
+    //              and wanted to auto-convert to JEs, a cardHotbarDrop similar to the one here would have to be done, but still no hotpatch. 
+
+
     //If needed, temporarily hijack assignHotbarMacro to trick core/modules to auto-create macros for cardHotbar instead
     //only needs to be done when dropping an item onto the card Hotbar.
     //revert once assign card macro complete
     console.debug("card Hotbar | Dropped type:", data.type);
-    if (data.type == "Item" || data.type =="RollTable") {
+    if (data.type == "Item" || data.type =="RollTable" || data.type =="JournalEntry") {
       console.debug("card Hotbar | Attempting monkey hotpatch!");
       let coreAssignHotbarMacro = game.user.assignHotbarMacro;
       game.user.assignHotbarMacro = this.assigncardHotbarMacro.bind(this); 
@@ -296,6 +317,18 @@ export class cardHotbar extends Hotbar {
       console.debug("card Hotbar | hotbarDrop true");
     }
  
+    if (data.type =="JournalEntry") {
+    // Only handles journal entry drops
+    console.debug("Card Hotbar | Journal Entry Drop detected!")
+    //we would have to write an equivalent _getDropJE maybe?
+    const je = await this._getDropMacro(data);
+      if ( je ) {
+        console.debug("card Hotbar | Journal Entry provided:", macro, "cardSlot", data.cardSlot);
+        await this.assigncardHotbarJE(je, cardSlot, {fromSlot: data.cardSlot});
+      }
+    return;
+    }
+
     // Only handles Macro drops
     const macro = await this._getDropMacro(data);
     if ( macro ) {
@@ -303,6 +336,8 @@ export class cardHotbar extends Hotbar {
       console.debug("card Hotbar | monkey hotpatch?", game.user.assignHotbarMacro === this.assigncardHotbarMacro);
         await this.assigncardHotbarMacro(macro, cardSlot, {fromSlot: data.cardSlot});
     }
+
+
   }
 
   /* -------------------------------------------- */
