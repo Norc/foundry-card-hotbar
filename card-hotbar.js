@@ -316,7 +316,8 @@ export class cardHotbar extends Hotbar {
     } else {
       console.debug("card Hotbar | hotbarDrop true");
     }
- 
+    
+    //This should never be called because the journal entry should now be a macro due to hotbarDrop 
     if (data.type =="JournalEntry") {
     // Only handles journal entry drops
     console.debug("Card Hotbar | Journal Entry Drop detected!")
