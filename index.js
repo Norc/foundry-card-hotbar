@@ -176,7 +176,6 @@ Hooks.on("renderSettingsConfig", async () => {
   $(coreFlagDiv).attr('id', 'coreFlagDiv');
 });
 
-//Can't get this to fire for some reason, check Furnace more?
 Hooks.on("hotbarDrop", (hotbar, data, slot) => {
   console.debug("Card Hotbar | Creating Macro")
   if (data.type !== "JournalEntry") return true;
@@ -188,7 +187,8 @@ Hooks.on("hotbarDrop", (hotbar, data, slot) => {
       type: "script",
       scope: "global",
       command: `game.journal.get("${journal.id}").show();`,
-      img: `${game.journal.get(journal.id).img}`
+
+      img: `${game.journal.get(journal.id).data.img}`
   }).then(macro => {
       game.user.assignHotbarMacro(macro, slot);
   });
