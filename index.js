@@ -29,12 +29,12 @@ async function cardHotbarInit() {
     + ` { bottom: ${cardHotbarSettings.getCHBYPos()}px; ` 
     + `   left: ${cardHotbarSettings.getCHBXPos()}px; `
     + ' }'
-
+/*
     + '#card-hotbar #card-macro-list' 
     + ` {` 
     + `   border: 1px solid ${cardHotbarSettings.getCHBBorderColor()};`
     + ' }'
-    
+*/    
     + '#card-hotbar .bar-controls' 
     + ` { background: ${cardHotbarSettings.getCHBPrimaryColor()};` 
     + `   border: 1px solid ${cardHotbarSettings.getCHBBorderColor()};`
@@ -42,7 +42,7 @@ async function cardHotbarInit() {
 
     + '#card-hotbar .macro' 
     + ` { background: ${cardHotbarSettings.getCHBPrimaryColor()};` 
-    + `   border: 1px solid ${cardHotbarSettings.getCHBBorderColor()};`
+    + `   border: 1px dashed ${cardHotbarSettings.getCHBBorderColor()};`
     + ' }'
 
     + '#card-hotbar .macro.active:hover' 

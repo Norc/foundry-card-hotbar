@@ -52,7 +52,7 @@ export class cardHotbarSettings {
             label: "Color Picker",         // The text label used in the button
             restricted: false,             // Restrict this setting to gamemaster only?
             config: false,                 // Disable display on the standard Foundry settings menu
-            default: "#0000FF80",     // The default color of the setting
+            default: "#99999980",     // The default color of the setting
             type: String,
             scope: "world",               // The scope of the setting
             config: false,                 // Disable display on the standard Foundry settings menu
@@ -65,7 +65,7 @@ export class cardHotbarSettings {
             hint: "cardHotbar.settings.chbBorderColor.nameHint",   // A description of the registered setting and its behavior
             label: "Color Picker",         // The text label used in the button
             restricted: false,             // Restrict this setting to gamemaster only?
-            default: "#0000FFff",     // The default color of the setting
+            default: "#999999ff",     // The default color of the setting
             type: String,
             scope: "world",               // The scope of the setting
             config: false,                 // Disable display on the standard Foundry settings menu
@@ -91,7 +91,7 @@ export class cardHotbarSettings {
             hint: "cardHotbar.settings.chbBorderColorInactive.nameHint",   // A description of the registered setting and its behavior
             label: "Color Picker",         // The text label used in the button
             restricted: false,             // Restrict this setting to gamemaster only?
-            default: "#808080ff",     // The default color of the setting
+            default: "#000000ff",     // The default color of the setting
             type: String,
             scope: "world",               // The scope of the setting
             config: false,                 // Disable display on the standard Foundry settings menu
