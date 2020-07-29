@@ -301,7 +301,7 @@ export class cardHotbar extends Hotbar {
     //only needs to be done when dropping an item onto the card Hotbar.
     //revert once assign card macro complete
     console.debug("card Hotbar | Dropped type:", data.type);
-    if (data.type == "Item" || data.type =="RollTable" || data.type =="JournalEntry") {
+    if (data.type == "Tile" || data.type =="JournalEntry") {
       console.debug("card Hotbar | Attempting monkey hotpatch!");
       let coreAssignHotbarMacro = game.user.assignHotbarMacro;
       game.user.assignHotbarMacro = this.assigncardHotbarMacro.bind(this); 
@@ -322,6 +322,8 @@ export class cardHotbar extends Hotbar {
     console.debug("Card Hotbar | Journal Entry Drop detected!")
     //we would have to write an equivalent _getDropJE maybe?
     const je = await this._getDropMacro(data);
+    console.debug ("Card Hotbar | je is:");
+    console.debug (je);
       if ( je ) {
         console.debug("card Hotbar | Journal Entry provided:", macro, "cardSlot", data.cardSlot);
         await this.assigncardHotbarJE(je, cardSlot, {fromSlot: data.cardSlot});
