@@ -122,11 +122,7 @@ Hooks.on("rendercardHotbar", async () => {
 
 
 Hooks.once('ready', () => {
-  //triple-check to make sure something didn't go horribly wrong with Lib Color Picker 
-  //The built-in backup library should handle most cases though
-  try{window.Ardittristan.ColorSetting.tester} catch {
-      ui.notifications.notify('Something went wrong with the "lib - ColorSettings" module. Please verify you have the latest version installed.', "error", {permanent: true});
-  }
+  console.debug("Card Hotbar | Foundry ready...");
 
   //Check to make sure that a hotbar rendered before initilizing so that PopOut module windows do not have unwanted card hotbars.
   let hotbarTest = ui.hotbar;
