@@ -101,6 +101,7 @@ async function cardHotbarInit() {
   });
 
   await ui.cardHotbar.render(true, obj);
+  Hooks.callAll("cardHotbarReady");
 }
 
 Hooks.on("init", async () => {
@@ -121,8 +122,8 @@ Hooks.on("rendercardHotbar", async () => {
 });
 
 
-Hooks.once('ready', () => {
-  console.debug("Card Hotbar | Foundry ready...");
+Hooks.on('ready', () => {
+  console.debug("Card Hotbar | Foundry setup...");
 
   //Check to make sure that a hotbar rendered before initilizing so that PopOut module windows do not have unwanted card hotbars.
   let hotbarTest = ui.hotbar;
@@ -135,6 +136,34 @@ Hooks.once('ready', () => {
 
 
 });
+
+
+Hooks.on('cardHotbarReady', async () => {
+  console.debug("Card Hotbar | Card Hotbar ready, performing final cleanup...");
+  //mark the first inactive macro as "next" for CSS styling and button changing
+  let cardHand = ui.cardHotbar.macros;
+  console.debug("Card Hotbar | cardHand defined?");
+  console.debug(cardHand);
+  for (var i = 0; i < cardHand.length; ++i) {
+    console.debug(i);
+    //Math.min(i+1,cardHand.length) && cardHand[i+1].cssClass.includes("inactive") ) 
+    if( cardHand[i].cssClass.includes("active") ) {
+      if( cardHand[i].cssClass.includes("next") ) {
+        console.log("Card Hotbar | Cleaning up recently filled card slot...");
+        //change button
+        cardHand[1].cssClass.replace("next", "");
+      }
+    } 
+    if( cardHand[i].cssClass.includes("inactive") ) {
+      //change button
+      console.log("Card Hotbar | Marking first inactive card slot as next...");
+      cardHand[i].cssClass = cardHand[i].cssClass.replace("inactive","") + " next";
+      return;
+    }
+  }
+
+});
+
 
 
 Hooks.on("renderSettingsConfig", async () => {
@@ -171,6 +200,7 @@ Hooks.on("hotbarDrop", (hotbar, data, slot) => {
   Macro.create({
       name: `Card: ${journal.name}`,
       type: "script",
+      //add journal ID as flag
       scope: "global",
       //Change first argument to "text" to show the journal entry as default.
       //NOTE: In order for this macro to work (0.6.5 anyway) there MUST be text (content attribute must not be null).
