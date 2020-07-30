@@ -3,7 +3,7 @@ import { cardHotbar }  from './card-hotbar.js';
 import { cardHotbarSettings } from './scripts/card-hotbar-settings.js';
 
 async function cardHotbarInit() {
-  console.debug("card Hotbar | Initializing...");
+  console.debug("Card Hotbar | Initializing...");
   window.cardHotbar = new cardHotbarPopulator();
   ui.cardHotbar = new cardHotbar(window.cardHotbar);
   ui.cardHotbar.macros = ui.cardHotbar.getData();
@@ -112,18 +112,12 @@ Hooks.on("init", async () => {
   };
 });
 
-Hooks.once("renderHotbar", async () => {
-
-  await cardHotbarInit();
-
-});
-
 Hooks.on("renderHotbar", async () => {
-  console.debug("card Hotbar | The core hotbar just rendered!");
+  console.debug("Card Hotbar | The core hotbar just rendered!");
 });
 
 Hooks.on("rendercardHotbar", async () => {
-  console.debug("card Hotbar | The card hotbar just rendered!");
+  console.debug("Card Hotbar | The card hotbar just rendered!");
 });
 
 
@@ -134,16 +128,12 @@ Hooks.once('ready', () => {
       ui.notifications.notify('Something went wrong with the "lib - ColorSettings" module. Please verify you have the latest version installed.', "error", {permanent: true});
   }
 
-  //make sure that the init was called if renderHotbar hook failed to trigger properly
-  //A workaround for Firefox compatibility currently while keeping PopOut module compatibility.
+  //Check to make sure that a hotbar rendered before initilizing so that PopOut module windows do not have unwanted card hotbars.
   let hotbarTest = ui.hotbar;
-  let chbTest = ui.cardHotbar;  
-  console.debug("card Hotbar | hotbarTest and chbTest?");
+  console.debug("Card Hotbar | Core Foundry Hotbar Present?");
   console.debug(hotbarTest);
-  console.debug(chbTest);
-
  
-  if ( hotbarTest && !chbTest ) {
+  if ( hotbarTest ) {
     cardHotbarInit();
   }
 
