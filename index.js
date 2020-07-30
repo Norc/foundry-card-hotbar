@@ -104,6 +104,33 @@ async function cardHotbarInit() {
   Hooks.callAll("cardHotbarReady");
 }
 
+async function classifyCards () {
+  //mark the first inactive macro as "next" for CSS styling and button changing
+  let cardHand = ui.cardHotbar.macros;
+  console.debug("Card Hotbar | cardHand defined?");
+  console.debug(cardHand);
+  for (var i = 0; i < cardHand.length; ++i) {
+    console.debug(i);
+    /*not functional yet
+    //Math.min(i+1,cardHand.length) && cardHand[i+1].cssClass.includes("inactive") ) 
+    if( cardHand[i].cssClass.includes("active") ) {
+      if( cardHand[i].cssClass.includes("next") ) {
+        console.log("Card Hotbar | Cleaning up recently filled card slot...");
+        //change button
+        cardHand[1].cssClass.replace("next", "");
+      }
+    } 
+    */
+    if( cardHand[i].cssClass.includes("inactive") ) {
+      //change button
+      console.log("Card Hotbar | Marking first inactive card slot as next...");
+      cardHand[i].cssClass = cardHand[i].cssClass.replace("inactive","") + " next";
+      console.debug(cardHand[i].cssClass);
+      return;
+    }
+  }
+}
+
 Hooks.on("init", async () => {
   CONFIG.ui.hotbar = class extends Hotbar {
     _onDragStart(...arg) {
@@ -140,30 +167,15 @@ Hooks.on('ready', () => {
 
 Hooks.on('cardHotbarReady', async () => {
   console.debug("Card Hotbar | Card Hotbar ready, performing final cleanup...");
-  //mark the first inactive macro as "next" for CSS styling and button changing
-  let cardHand = ui.cardHotbar.macros;
-  console.debug("Card Hotbar | cardHand defined?");
-  console.debug(cardHand);
-  for (var i = 0; i < cardHand.length; ++i) {
-    console.debug(i);
-    //Math.min(i+1,cardHand.length) && cardHand[i+1].cssClass.includes("inactive") ) 
-    if( cardHand[i].cssClass.includes("active") ) {
-      if( cardHand[i].cssClass.includes("next") ) {
-        console.log("Card Hotbar | Cleaning up recently filled card slot...");
-        //change button
-        cardHand[1].cssClass.replace("next", "");
-      }
-    } 
-    if( cardHand[i].cssClass.includes("inactive") ) {
-      //change button
-      console.log("Card Hotbar | Marking first inactive card slot as next...");
-      cardHand[i].cssClass = cardHand[i].cssClass.replace("inactive","") + " next";
-      return;
-    }
-  }
-
+  classifyCards();
 });
 
+Hooks.on('rendercardHotbar', async () => {
+  console.debug("Card Hotbar | Reclassifying Card Hotbar macros...");
+  //overwritten by normal logic still
+  //squash a few random undefined errors
+  classifyCards();
+});
 
 
 Hooks.on("renderSettingsConfig", async () => {
