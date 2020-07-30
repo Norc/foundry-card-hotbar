@@ -172,7 +172,9 @@ Hooks.on("hotbarDrop", (hotbar, data, slot) => {
       name: `Card: ${journal.name}`,
       type: "script",
       scope: "global",
-      command: `game.journal.get("${journal.id}").show();`,
+      //Change first argument to "text" to show the journal entry as default.
+      //NOTE: In order for this macro to work (0.6.5 anyway) there MUST be text (content attribute must not be null).
+      command: `game.journal.get("${journal.id}").show("image", false);`,
 
       img: `${game.journal.get(journal.id).data.img}`
   }).then(macro => {
