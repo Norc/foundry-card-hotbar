@@ -70,10 +70,16 @@ export class cardHotbar extends Hotbar {
  * @private
  */
   _getcardMacrosByPage(page) { 
+    let nextCard = false;
     const macros = this.getcardHotbarMacros(page);
     for ( let [i, m] of macros.entries() ) {
       m.key = i<9 ? i+1 : 0;
       m.cssClass = m.macro ? "active" : "inactive";
+      //additional logic to mark the first empty slot as "next"
+      if (m.cssClass == "inactive" && nextCard == false ) {
+        m.cssClass = "next";
+        nextCard = true;
+      }
       m.icon = m.macro ? m.macro.data.img : null;
     }
     return macros;
@@ -376,10 +382,10 @@ export class cardHotbar extends Hotbar {
   _onDragStart(event) {
     //hide tooltip so it doesn't get in the way
     console.debug("card Hotbar | Attempting to hide tooltip.");
-    document.getElementsByClassName("tooltip")[0].style.display = "none";
 
     const li = event.currentTarget.closest(".macro");
     if ( !li.dataset.macroId ) return false;
+    document.getElementsByClassName("tooltip")[0].style.display = "none";
     const dragData = { type: "Macro", id: li.dataset.macroId, cardSlot: li.dataset.slot };
     event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
   }
@@ -426,7 +432,7 @@ export class cardHotbar extends Hotbar {
   _onHoverMacro(event) {
     event.preventDefault();
     const li = event.currentTarget;
-    const hasAction = !li.classList.contains("inactive");
+    const hasAction = ( !li.classList.contains("inactive") && !li.classList.contains("next") );
 
     // Remove any existing tooltip
     const tooltip = li.querySelector(".tooltip");

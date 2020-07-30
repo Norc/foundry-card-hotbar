@@ -101,37 +101,9 @@ async function cardHotbarInit() {
   });
 
   await ui.cardHotbar.render(true, obj);
-  Hooks.callAll("cardHotbarReady");
 }
-
-async function classifyCards () {
-  //mark the first inactive macro as "next" for CSS styling and button changing
-  let cardHand = ui.cardHotbar.macros;
-  console.debug("Card Hotbar | cardHand defined?");
-  console.debug(cardHand);
-  for (var i = 0; i < cardHand.length; ++i) {
-    console.debug(i);
-    /*not functional yet
-    //Math.min(i+1,cardHand.length) && cardHand[i+1].cssClass.includes("inactive") ) 
-    if( cardHand[i].cssClass.includes("active") ) {
-      if( cardHand[i].cssClass.includes("next") ) {
-        console.log("Card Hotbar | Cleaning up recently filled card slot...");
-        //change button
-        cardHand[1].cssClass.replace("next", "");
-      }
-    } 
-    */
-    if( cardHand[i].cssClass.includes("inactive") ) {
-      //change button
-      console.log("Card Hotbar | Marking first inactive card slot as next...");
-      cardHand[i].cssClass = cardHand[i].cssClass.replace("inactive","") + " next";
-      console.debug(cardHand[i].cssClass);
-      return;
-    }
-  }
-}
-
-Hooks.on("init", async () => {
+ 
+Hooks.once("init", async () => {
   CONFIG.ui.hotbar = class extends Hotbar {
     _onDragStart(...arg) {
       document.getElementsByClassName("tooltip")[0].style.display = "none";
@@ -149,7 +121,7 @@ Hooks.on("rendercardHotbar", async () => {
 });
 
 
-Hooks.on('ready', () => {
+Hooks.once('ready', () => {
   console.debug("Card Hotbar | Foundry setup...");
 
   //Check to make sure that a hotbar rendered before initilizing so that PopOut module windows do not have unwanted card hotbars.
@@ -164,17 +136,8 @@ Hooks.on('ready', () => {
 
 });
 
-
-Hooks.on('cardHotbarReady', async () => {
-  console.debug("Card Hotbar | Card Hotbar ready, performing final cleanup...");
-  classifyCards();
-});
-
 Hooks.on('rendercardHotbar', async () => {
-  console.debug("Card Hotbar | Reclassifying Card Hotbar macros...");
-  //overwritten by normal logic still
-  //squash a few random undefined errors
-  classifyCards();
+  console.debug("Card Hotbar | Card Hotbar rendered.");
 });
 
 
@@ -224,11 +187,6 @@ Hooks.on("hotbarDrop", (hotbar, data, slot) => {
   });
   return false;
 });
-
-//FROM MQOL:
-/* when fixed replace with Hooks.on("hotbarDrop", hotbarHandler)
-Hooks._hooks.hotbarDrop = [hotbarHandler].concat(Hooks._hooks.hotbarDrop || []);
-*/
 
 /* NOTE: ERRORS/ISSUES WITH CORE HOTBAR (LOL, SHRUG)
 0.6.4, DND 5E 0.93 (ALL MODS DISABLED)
