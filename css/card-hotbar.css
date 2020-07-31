@@ -1,11 +1,12 @@
 /*Global styles*/
 
+/* TO DO: figure out why so wide, even after hiding cards */
 #card-hotbar {
     z-index: 69;
     position: fixed;
     bottom: 63px;
     left: 220px;
-    width: 1200px;
+/*    max-width: 1200px; */
     height: 200px;
     box-sizing: border-box;
 }
@@ -37,15 +38,17 @@
 #card-hotbar #card-macro-list {
     flex: 0 0 502px;
     height: 100%;
-    min-width: 100%;
     list-style: none;
-    margin: 0 2px;
+    margin: 2px;
     padding: 0;
     border: 0px;
     border-radius: 10px;
 }
 
 #card-hotbar .macro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     flex: 0 0 100px;
     height: 100%;
@@ -54,16 +57,6 @@
     background: #99999980;
     box-shadow: 0 0 5px #000 inset;
     cursor: pointer;
-}
-
-#card-hotbar .macro .macro-key {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    padding: 1px 3px;
-    background: #111;
-    color: #f0f0e0;
-    font-weight: bold;
 }
 
 #card-hotbar .macro .card-macro-key {
@@ -79,7 +72,7 @@
 
 #card-hotbar img {
     box-sizing: border-box;
-    border-radius: px;
+    border-radius: 0px;
     max-width: 100%;
 }
 
@@ -97,6 +90,25 @@
 
 #card-hotbar .macro.inactive:hover {
     border: 1px solid gray;
+}
+
+
+#card-hotbar .macro .tooltip {
+    display: block;
+    min-width: 148px;
+    height: 26px;
+    padding: 2px 4px;
+    position: absolute;
+    top: -32px;
+    left: -50px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #191813;
+    border-radius: 3px;
+    color: #f0f0e0;
+    line-height: 22px;
+    text-align: center;
+    white-space: nowrap;
+    word-break: break-all;
 }
 
 #card-hotbar .macro .tooltip {
@@ -151,13 +163,17 @@
 }
 */
 
+
+
 /* Settings CSS */
+
+/* TO DO: REPLACE chbSettings with cardSettings!!! */
 div.chbSettings div.formgroup {
     margin-top: 0.75em;
     margin-bottom: 0.75em;
 }
 
-div.chbSettings input[is="colorpicker-input"] {
+div.chbSettings input {
     background-color: unset;
     max-width:20%;
     text-align: center;

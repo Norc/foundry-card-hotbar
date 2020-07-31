@@ -102,7 +102,15 @@ async function cardHotbarInit() {
 
   await ui.cardHotbar.render(true, obj);
 }
- 
+
+//this should really be imported from somehwere, ideally from Game Decks module.
+async function createTileFromItem(id, X, Y) {
+  //code to create tile goes here
+  //allow only journal entry ids for simplicity
+  console.debug("Card Hotbar | Create tile logic would happen here for following je");
+  console.debug ( game.journal.get(id) );
+}
+
 Hooks.once("init", async () => {
   CONFIG.ui.hotbar = class extends Hotbar {
     _onDragStart(...arg) {
@@ -175,7 +183,12 @@ Hooks.on("hotbarDrop", (hotbar, data, slot) => {
   Macro.create({
       name: `Card: ${journal.name}`,
       type: "script",
-      //add journal ID as flag
+      flags: {
+        "world": {
+          "data": "{\"value\":2,\"suit\":\"Clubs\"}",
+          "card-id": `${journal.id}`,
+        }
+      },
       scope: "global",
       //Change first argument to "text" to show the journal entry as default.
       //NOTE: In order for this macro to work (0.6.5 anyway) there MUST be text (content attribute must not be null).
@@ -186,6 +199,28 @@ Hooks.on("hotbarDrop", (hotbar, data, slot) => {
       game.user.assignHotbarMacro(macro, slot);
   });
   return false;
+});
+
+// Add the listener to the board html element
+//remember to use new 0.70 hook to cancel harmless error about no slot available
+Hooks.once("canvasReady", (_) => {
+  document.getElementById("board").addEventListener("drop", async (event) => {
+    // Try to extract the data (type + src)
+    let data;
+    //try {
+      data = JSON.parse(event.dataTransfer.getData("text/plain"));
+      let m = game.macros.get(data.id);
+      let je = game.journal.get( m.getFlag("world", "card-id") );
+      console.debug("Card Hotbar | Canvas drop detected");
+      console.debug(event);
+      console.debug(data);
+      console.debug(m);
+      console.debug(je);
+      await createTileFromItem(je.id, event.clientX, event.clientY)
+    //} catch (err) {
+      return;
+    //}
+  });
 });
 
 /* NOTE: ERRORS/ISSUES WITH CORE HOTBAR (LOL, SHRUG)
