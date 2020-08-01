@@ -6,7 +6,7 @@
     "version": "0.0.3",
     "minimumCoreVersion": "0.5.7",
     "compatibleCoreVersion":"0.7.0",
-    "esmodules": ["index.js"],
+    "esmodules": ["index.js", "scripts/tilehud.js"],
     "languages": [
       {
         "lang": "en",
