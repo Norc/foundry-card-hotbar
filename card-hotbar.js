@@ -76,7 +76,7 @@ export class cardHotbar extends Hotbar {
       m.key = i<9 ? i+1 : 0;
       m.cssClass = m.macro ? "active" : "inactive";
       //additional logic to mark the first empty slot as "next"
-      if (m.cssClass == "inactive" && nextCard == false ) {
+      if (m.cssClass == "inactive" && nextCard == false &&  m.key != 1 ) {
         m.cssClass = "next";
         nextCard = true;
       }

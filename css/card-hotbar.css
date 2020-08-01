@@ -35,6 +35,10 @@
     display: block
 }
 
+#card-hotbar .bar-controls img {
+    border: 0px;
+}
+
 #card-hotbar #card-macro-list {
     flex: 0 0 502px;
     height: 100%;
@@ -75,10 +79,11 @@
     border-radius: 0px;
     max-width: 100%;
 }
-
+/*
 #card-hotbar .macro.inactive {
     display: none;
 }
+*/
 
 #card-hotbar .macro:hover {
     box-shadow: 0 0 10px #ff6400 inset;
@@ -149,6 +154,8 @@
 #card-hotbar-page-controls {
     display:none;
 }
+
+
 
 /*
 #card-hotbar .bar-controls a.page-control {
@@ -252,7 +259,8 @@ div#client-settings div#coreSetDiv {
 .macro .tooltip span {
     z-index: 4;
 }
-  
+
+
 div.chbSettings div.colorsplash .layout_default.picker_wrapper{
     margin-bottom: 26px;
 }

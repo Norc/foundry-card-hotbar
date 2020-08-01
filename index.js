@@ -35,8 +35,9 @@ async function cardHotbarInit() {
     + `   border: 1px solid ${cardHotbarSettings.getCHBBorderColor()};`
     + ' }'
 */    
-    + '#card-hotbar .bar-controls' 
-    + ` { background: ${cardHotbarSettings.getCHBPrimaryColor()};` 
+    + '#card-hotbar .bar-controls'
+/* Hard-coded for now */ 
+    + ` { background: #00000080;` 
     + `   border: 1px solid ${cardHotbarSettings.getCHBBorderColor()};`
     + ' }'
 
@@ -54,7 +55,7 @@ async function cardHotbarInit() {
     + ' {' 
     + `     border: 1px solid ${cardHotbarSettings.getCHBBorderColorInactive()};`
     + ' }'
-    
+
   , head = document.head || document.getElementsByTagName('head')[0]
   , style = document.createElement('style');
 
