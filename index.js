@@ -172,7 +172,7 @@ Hooks.on("hotbarDrop", (hotbar, data, slot) => {
       name: `Card: ${journal.name}`,
       type: "script",
       flags: {
-        "world": {
+        "sdf-decks": {
           "card-id": `${journal.id}`,
         }
       },
@@ -197,7 +197,7 @@ Hooks.once("canvasReady", (_) => {
 //    try {
       data = JSON.parse(event.dataTransfer.getData("text/plain"));
       let m = game.macros.get(data.id);
-      let je = game.journal.get( m.getFlag("world", "card-id") );
+      let je = game.journal.get( m.getFlag("sdf-decks", "card-id") );
       console.debug("Card Hotbar | Canvas drop detected");
       console.debug(event);
       console.debug(data);
@@ -235,7 +235,7 @@ async function createTileFromItem(objId, x, y){
     width: _width * cardScale,
     height: _height * cardScale,
     flags: {
-      "world": {
+      "sdf-decks": {
         "card-id": `${objId}`,
       }
     }
