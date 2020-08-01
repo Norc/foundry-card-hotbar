@@ -54,38 +54,7 @@ async function cardHotbarInit() {
     + ' {' 
     + `     border: 1px solid ${cardHotbarSettings.getCHBBorderColorInactive()};`
     + ' }'
-
-
-
-    + '#hotbar' 
-    + ` { bottom: ${cardHotbarSettings.getCoreYPos()}px; ` 
-    + `   left: ${cardHotbarSettings.getCoreXPos()}px; `
-    + ' }'
-
-    + '#hotbar #card-macro-list' 
-    + ` {` 
-    + `   border: 1px solid ${cardHotbarSettings.getCoreBorderColor()};`
-    + ' }'
     
-    + '#hotbar .bar-controls' 
-    + ` { background: ${cardHotbarSettings.getCorePrimaryColor()};` 
-    + `   border: 1px solid ${cardHotbarSettings.getCoreBorderColor()};`
-    + ' }'
-
-    + '#hotbar .macro' 
-    + ` { background: ${cardHotbarSettings.getCorePrimaryColor()};` 
-    + `   border: 1px solid ${cardHotbarSettings.getCoreBorderColor()};`
-    + ' }'
-
-    + '#hotbar .macro.active:hover' 
-    + ' {' 
-    + `     border: 1px solid ${cardHotbarSettings.getCoreBorderColorActive()};`
-    + ' }'
-
-    + '#hotbar .macro.inactive:hover' 
-    + ' {' 
-    + `     border: 1px solid ${cardHotbarSettings.getCoreBorderColorInactive()};`
-    + ' }'
   , head = document.head || document.getElementsByTagName('head')[0]
   , style = document.createElement('style');
 
@@ -94,22 +63,40 @@ async function cardHotbarInit() {
   style.type = 'text/css';
   style.appendChild(document.createTextNode(css));
 
-  ui.hotbar.render();
+//  ui.hotbar.render();
+
   Array.from(document.getElementsByClassName("macro")).forEach(function (element) {
     element.ondragstart = ui.hotbar._onDragStart;
     element.ondragend = ui.hotbar._onDrop;
   });
 
+  /* Add support for dragging tile from canvas onto hotbar later
+  //add handler for dragging tiles onto hotbar, with thanks to Vance
+  let dragging = false;
+
+  //only trigger for card tiles
+  const ogPlaceableObject = PlaceableObject.prototype._onDragLeftStart;
+  PlaceableObject.prototype._onDragLeftStart = function (...args) { 
+  const e = args[0];
+  let tokens = e.data.clones;
+  if (tokens) {
+    dragging = tokens[0].actor;
+    console.log(`Picked up: ${dragging.data.name}`);
+  }
+  return ogPlaceableObject.apply(this, args);
+  }
+
+  $(document).mouseup((e) => {
+    if(dragging) {
+      console.log(`Dropped: ${dragging.data.name} onto ${e.target}`);
+      dragging = false;
+    }
+  })
+*/
+
   await ui.cardHotbar.render(true, obj);
 }
 
-//this should really be imported from somehwere, ideally from Game Decks module.
-async function createTileFromItem(id, X, Y) {
-  //code to create tile goes here
-  //allow only journal entry ids for simplicity
-  console.debug("Card Hotbar | Create tile logic would happen here for following je");
-  console.debug ( game.journal.get(id) );
-}
 
 Hooks.once("init", async () => {
   CONFIG.ui.hotbar = class extends Hotbar {
@@ -185,7 +172,6 @@ Hooks.on("hotbarDrop", (hotbar, data, slot) => {
       type: "script",
       flags: {
         "world": {
-          "data": "{\"value\":2,\"suit\":\"Clubs\"}",
           "card-id": `${journal.id}`,
         }
       },
@@ -207,7 +193,7 @@ Hooks.once("canvasReady", (_) => {
   document.getElementById("board").addEventListener("drop", async (event) => {
     // Try to extract the data (type + src)
     let data;
-    //try {
+//    try {
       data = JSON.parse(event.dataTransfer.getData("text/plain"));
       let m = game.macros.get(data.id);
       let je = game.journal.get( m.getFlag("world", "card-id") );
@@ -217,11 +203,43 @@ Hooks.once("canvasReady", (_) => {
       console.debug(m);
       console.debug(je);
       await createTileFromItem(je.id, event.clientX, event.clientY)
-    //} catch (err) {
-      return;
-    //}
+//    } catch (err) {
+//      return;
+//    }
   });
 });
+
+async function createTileFromItem(objId, x, y){
+  let imgPath = game.journal.get(objId).data.img
+  console.log(imgPath);
+
+  // Determine the Tile Size:
+  const tex = await loadTexture(imgPath);
+  const _width = tex.width;
+  const _height = tex.height;
+
+  // Project the tile Position
+  let t = canvas.tiles.worldTransform;
+  const _x = (x - t.tx) / canvas.stage.scale.x
+  const _y = (y - t.ty) / canvas.stage.scale.y
+  
+  //cardScale is a value between 0 and 9, usually a decimal value between 0 and 1 representing a percentage.
+  //eventually will be replaced with a setting.
+
+  const cardScale = 0.25;
+  await Tile.create({
+    img: imgPath,
+    x: _x,
+    y: _y,
+    width: _width * cardScale,
+    height: _height * cardScale,
+    flags: {
+      "world": {
+        "card-id": `${objId}`,
+      }
+    }
+  })
+}
 
 /* NOTE: ERRORS/ISSUES WITH CORE HOTBAR (LOL, SHRUG)
 0.6.4, DND 5E 0.93 (ALL MODS DISABLED)

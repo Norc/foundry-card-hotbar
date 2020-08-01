@@ -214,8 +214,46 @@ export class cardHotbar extends Hotbar {
    */
   _contextMenu(html) {
     new ContextMenu(html, ".macro", [
+      //TODO: Add JQuery to visually deprecte delete and edit card. Add code where needed. Create More menu with submenus?
+      //change draw one to click blank and/or add button.
       {
-        name: "Edit",
+        name: "Play Card",
+        icon: '<i class="fas fa-play-circle"></i>',
+        condition: li => {
+          const macro = game.macros.get(li.data("macro-id"));
+          return macro ? macro.owner : false;
+        },
+        callback: li => {
+          const macro = game.macros.get(li.data("macro-id"));
+          //add code for default card playing action here
+        }
+      },
+      {
+        name: "Discard Card",
+        icon: '<i class="fas fa-minus-square"></i>',
+        condition: li => {
+          const macro = game.macros.get(li.data("macro-id"));
+          return macro ? macro.owner : false;
+        },
+        callback: li => {
+          const macro = game.macros.get(li.data("macro-id"));
+          //add code to discard card here
+        }
+      },
+      {
+        name: "Reveal Card",
+        icon: '<i class="fas fa-sun"></i>',
+        condition: li => {
+          const macro = game.macros.get(li.data("macro-id"));
+          return macro ? macro.owner : false;
+        },
+        callback: li => {
+          const macro = game.macros.get(li.data("macro-id"));
+          //add code to show card's journal card here. Possibly submenu to select players.
+        }
+      },
+      {
+        name: "Edit Card Macro",
         icon: '<i class="fas fa-edit"></i>',
         condition: li => {
           const macro = game.macros.get(li.data("macro-id"));
@@ -227,14 +265,7 @@ export class cardHotbar extends Hotbar {
         }
       },
       {
-        name: "Remove",
-        icon: '<i class="fas fa-times"></i>',
-        callback: li => {
-            ui.cardHotbar.assigncardHotbarMacro(null, li.data("slot"));
-      }
-      },
-      {
-        name: "Delete",
+        name: "Delete From Hand",
         icon: '<i class="fas fa-trash"></i>',
         condition: li => {
           const macro = game.macros.get(li.data("macro-id"));
@@ -247,6 +278,30 @@ export class cardHotbar extends Hotbar {
             content: game.i18n.localize("MACRO.DeleteConfirm"),
             yes: macro.delete.bind(macro)
           });
+        }
+      },
+      {
+        name: "Draw Card",
+        icon: '<i class="fas fa-plus"></i>',
+        condition: li => {
+          const macro = game.macros.get(li.data("macro-id"));
+          return !macro;
+        },
+        callback: li => {
+          const macro = game.macros.get(li.data("macro-id"));
+          //code to draw card here
+        }
+      },
+      {
+        name: "Draw Multiple",
+        icon: '<i class="fas fa-plus-square"></i>',
+        condition: li => {
+          const macro = game.macros.get(li.data("macro-id"));
+          return !macro;
+        },
+        callback: li => {
+          const macro = game.macros.get(li.data("macro-id"));
+          //code to draw multiple card here
         }
       },
     ]);
