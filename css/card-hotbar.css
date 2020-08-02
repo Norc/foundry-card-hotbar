@@ -18,9 +18,6 @@
 #card-hotbar #card-hotbar-directory-controls {
     border: 1px #000000ff;
     pointer-events: all;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 #card-hotbar #card-hotbar-directory-controls.collapsed i.fas.fa-times {
@@ -39,10 +36,22 @@
     display: none;
 }
 
+#card-hotbar #card-hotbar-directory-controls a#card-bar-toggle {
+    flex: 0.4;
+}
+
 #card-hotbar #card-hotbar-directory-controls div.expanded {
     pointer-events: all;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
 }
+
+#card-hotbar #card-hotbar-directory-controls a {
+    flex: 1;
+}
+
 
 #card-hotbar #card-action-bar {
     pointer-events: all;
