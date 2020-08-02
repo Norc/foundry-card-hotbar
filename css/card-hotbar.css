@@ -24,17 +24,15 @@
     display: none;
 }
 
+#card-hotbar #card-hotbar-directory-controls img.collapsed {
+    display: none;
+}
 
-#card-hotbar #card-hotbar-directory-controls.collapsed div.collapsed {
-    pointer-events: all;
+#card-hotbar #card-hotbar-directory-controls.collapsed img.collapsed {
     display: block;
 }
 
 #card-hotbar #card-hotbar-directory-controls.collapsed div.expanded {
-    display: none;
-}
-
-#card-hotbar #card-hotbar-directory-controls div.collapsed {
     display: none;
 }
 
