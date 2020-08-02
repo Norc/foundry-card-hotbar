@@ -18,6 +18,9 @@
 #card-hotbar #card-hotbar-directory-controls {
     border: 1px #000000ff;
     pointer-events: all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #card-hotbar #card-hotbar-directory-controls.collapsed i.fas.fa-times {

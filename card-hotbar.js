@@ -199,12 +199,12 @@ export class cardHotbar extends Hotbar {
     const icon = controls.find("#card-bar-toggle")[0].children[1];
     return new Promise(resolve => {
       ui.cardHotbar.element.removeClass("collapsed");
-      setTimeout(300);
+      controls.removeClass("collapsed");
+      setTimeout(250);
       bar.slideDown(200, () => {
         bar.css("display", "");
         icon.classList.remove("fa-caret-up")
         icon.classList.add(("fa-caret-down"));
-        controls.removeClass("collapsed");
         bar.removeClass("collapsed");
         this._collapsed = false;
         resolve(true);
