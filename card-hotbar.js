@@ -76,7 +76,7 @@ export class cardHotbar extends Hotbar {
       m.key = i<9 ? i+1 : 0;
       m.cssClass = m.macro ? "active" : "inactive";
       //additional logic to mark the first empty slot as "next"
-      if (m.cssClass == "inactive" && nextCard == false &&  m.key != 1 ) {
+      if (m.cssClass == "inactive" && nextCard == false ) {
         m.cssClass = "next";
         nextCard = true;
       }
@@ -171,13 +171,16 @@ export class cardHotbar extends Hotbar {
    */
   async collapse() {
     if ( this._collapsed ) return true;
-    const toggle = this.element.find("#card-bar-toggle");
-    const icon = toggle.children("i");
+    const controls = this.element.find("#card-hotbar-directory-controls");
     const bar = this.element.find("#card-action-bar");
+    const icon = controls.find("#card-bar-toggle")[0].children[1];
     return new Promise(resolve => {
       bar.slideUp(200, () => {
+        icon.classList.remove("fa-caret-down")
+        icon.classList.add(("fa-caret-up"));
+        controls.addClass("collapsed");
         bar.addClass("collapsed");
-        icon.removeClass("fa-caret-down").addClass("fa-caret-up");
+        ui.cardHotbar.element.addClass("collapsed");
         this._collapsed = true;
         resolve(true);
       });
@@ -191,14 +194,18 @@ export class cardHotbar extends Hotbar {
    */
   expand() {
     if ( !this._collapsed ) return true;
-    const toggle = this.element.find("#card-bar-toggle");
-    const icon = toggle.children("i");
+    const controls = this.element.find("#card-hotbar-directory-controls");
     const bar = this.element.find("#card-action-bar");
+    const icon = controls.find("#card-bar-toggle")[0].children[1];
     return new Promise(resolve => {
+      ui.cardHotbar.element.removeClass("collapsed");
+      setTimeout(300);
       bar.slideDown(200, () => {
         bar.css("display", "");
+        icon.classList.remove("fa-caret-up")
+        icon.classList.add(("fa-caret-down"));
+        controls.removeClass("collapsed");
         bar.removeClass("collapsed");
-        icon.removeClass("fa-caret-up").addClass("fa-caret-down");
         this._collapsed = false;
         resolve(true);
       });
@@ -217,7 +224,7 @@ export class cardHotbar extends Hotbar {
       //TODO: Add JQuery to visually deprecte delete and edit card. Add code where needed. Create More menu with submenus?
       //change draw one to click blank and/or add button.
       {
-        name: "Play Card",
+        name: "Flip Card",
         icon: '<i class="fas fa-play-circle"></i>',
         condition: li => {
           const macro = game.macros.get(li.data("macro-id"));
@@ -226,18 +233,6 @@ export class cardHotbar extends Hotbar {
         callback: li => {
           const macro = game.macros.get(li.data("macro-id"));
           //add code for default card playing action here
-        }
-      },
-      {
-        name: "Discard Card",
-        icon: '<i class="fas fa-minus-square"></i>',
-        condition: li => {
-          const macro = game.macros.get(li.data("macro-id"));
-          return macro ? macro.owner : false;
-        },
-        callback: li => {
-          const macro = game.macros.get(li.data("macro-id"));
-          //add code to discard card here
         }
       },
       {
@@ -503,7 +498,15 @@ export class cardHotbar extends Hotbar {
         tooltip.classList.add("tooltip");
         tooltip.textContent = macro.name;
         li.appendChild(tooltip);
+      } 
+    
+      else {
+        const tooltip = document.createElement("SPAN");
+        tooltip.classList.add("tooltip");
+        tooltip.textContent = "Click or right-click to draw";
+        li.appendChild(tooltip);
       }
+    
     }
 
     // Handle hover-out

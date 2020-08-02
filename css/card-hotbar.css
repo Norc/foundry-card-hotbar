@@ -6,13 +6,41 @@
     position: fixed;
     bottom: 63px;
     left: 220px;
-/*    max-width: 1200px; */
+    max-width: 100%;
     height: 200px;
     box-sizing: border-box;
 }
 
+#card-hotbar.collapsed {
+    height: 50px;
+}
+
 #card-hotbar #card-hotbar-directory-controls {
+    border: 1px #000000ff;
     pointer-events: all;
+}
+
+#card-hotbar #card-hotbar-directory-controls.collapsed i.fas.fa-times {
+    display: none;
+}
+
+
+#card-hotbar #card-hotbar-directory-controls.collapsed div.collapsed {
+    pointer-events: all;
+    display: block;
+}
+
+#card-hotbar #card-hotbar-directory-controls.collapsed div.expanded {
+    display: none;
+}
+
+#card-hotbar #card-hotbar-directory-controls div.collapsed {
+    display: none;
+}
+
+#card-hotbar #card-hotbar-directory-controls div.expanded {
+    pointer-events: all;
+    display: block;
 }
 
 #card-hotbar #card-action-bar {
@@ -35,13 +63,10 @@
     display: block
 }
 
-#card-hotbar .bar-controls img {
-    border: 0px;
-}
-
 #card-hotbar #card-macro-list {
-    flex: 0 0 502px;
+    flex: 0 0 1200px;
     height: 100%;
+    width: 100%;
     list-style: none;
     margin: 2px;
     padding: 0;
@@ -63,27 +88,22 @@
     cursor: pointer;
 }
 
-#card-hotbar .macro .card-macro-key {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    padding: 1px 3px;
-    background: #111;
-    color: #f0f0e0;
-    font-weight: bold;
-    font-size: 0.8em;
+#card-hotbar .macro.next {
+    border: 6px dashed #777777bb;
+    box-shadow: none;
 }
 
 #card-hotbar img {
     box-sizing: border-box;
     border-radius: 0px;
+    border: 0px;
     max-width: 100%;
 }
-/*
+
 #card-hotbar .macro.inactive {
     display: none;
 }
-*/
+
 
 #card-hotbar .macro:hover {
     box-shadow: 0 0 10px #ff6400 inset;
