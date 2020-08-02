@@ -225,7 +225,7 @@ export class cardHotbar extends Hotbar {
       //change draw one to click blank and/or add button.
       {
         name: "Flip Card",
-        icon: '<i class="fas fa-play-circle"></i>',
+        icon: '<i class="fas fa-undo"></i>',
         condition: li => {
           const macro = game.macros.get(li.data("macro-id"));
           return macro ? macro.owner : false;
@@ -412,11 +412,14 @@ export class cardHotbar extends Hotbar {
     event.preventDefault();
     const li = event.currentTarget;
 
-    // Case 1 - create a new Macro
-    if ( li.classList.contains("inactive") ) {
+    // Case 1 - draw a card
+    if ( li.classList.contains("next") ) {
+      console.debug("Card Hotbar | Drawing 1 card from current deck...");
+      /* REPLACE WITH CARD DRAW
       const macro = await Macro.create({name: "New Macro", type: "chat", scope: "global"});
       await ui.cardHotbar.assigncardHotbarMacro(macro, li.dataset.slot);
       macro.sheet.render(true);
+      */
     }
 
     // Case 2 - trigger a Macro
