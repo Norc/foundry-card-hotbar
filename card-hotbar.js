@@ -21,7 +21,7 @@ export class cardHotbar extends Hotbar {
      * Track collapsed state
      * @type {boolean}
      */
-    this._collapsed = false;
+    this._collapsed = true;
     /**
      * Track which hotbar slot is the current hover target, if any
      * @type {number|null}
@@ -53,7 +53,7 @@ export class cardHotbar extends Hotbar {
 
   /** @override */
   getData(options) {
-    this.macros = this._getcardMacrosByPage(this.page);
+      this.macros = this._getcardMacrosByPage(this.page);
     return {
       page: this.page,
       macros: this.macros,
@@ -232,6 +232,7 @@ export class cardHotbar extends Hotbar {
         },
         callback: li => {
           const macro = game.macros.get(li.data("macro-id"));
+          console.debug("Card Hotbar | Flipping card...");
           //add code for default card playing action here
         }
       },
@@ -302,20 +303,15 @@ export class cardHotbar extends Hotbar {
     ]);
   }
 
-/* -------------------------------------------- */
-
-  /**
-   * Assign a Macro to a numbered card hotbar slot between 1 and 10
-   * eventually expand this to a full 50 later maybe
-   * @param {Macro|null} macro  The Macro entity to assign
-   * @param {number} slot       The integer Hotbar slot to fill
-   * @param {number} [fromSlot] An optional origin slot from which the Macro is being shifted
-   * @return {Promise}          A Promise which resolves once the User update is complete
-   */
-  async assigncardHotbarJE(je, slot, {fromSlot=null}={}) {
-    console.debug("Card Hotbar | Work some magic here similar to for assignCustomHotbarMacro in previous function.")
+  swapDeck() {
+    console.debug("Card Hotbar | Swapping current deck...");
+    //add deck swap logic here
   }
 
+  resetDeck() {
+    console.debug("Card Hotbar | Resetting current deck...");
+    //add deck reset logic here    
+  }
 
   	/* -------------------------------------------- */
   /*  Event Listeners and Handlers
@@ -323,9 +319,10 @@ export class cardHotbar extends Hotbar {
   /** @override */
   
   activateListeners(html) {
-    //event.preventDefault();
     super.activateListeners(html);
     html.find('#card-bar-toggle').click(this._onToggleBar.bind(this));
+    html.find('#swap-deck').click(this.swapDeck.bind(this));
+    html.find('#reset-deck').click(this.resetDeck.bind(this));
     //    Disable pages for now, will just work with first page.
     //    html.find(".page-control").click(this._onClickPageControl.bind(this));
   }

@@ -50,6 +50,7 @@
 
 #card-hotbar #card-hotbar-directory-controls a {
     flex: 1;
+    width: 100%;
 }
 
 
