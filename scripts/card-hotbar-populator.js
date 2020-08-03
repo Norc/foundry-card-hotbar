@@ -3,7 +3,33 @@ export class cardHotbarPopulator {
         this.macroMap = this.chbGetMacros();
     }
 
-    
+    addCardToHand(cardId){
+        console.debug("Card Hotbar | Adding card to hand...");
+        //generate macro for card
+        //TODO: better consolidate with code in index.js in hotbarDrop hook (call hook? make function at least?)
+        // Make a new macro for the Journal
+        let journal = game.journal.get(cardId);
+        let newMacro = Macro.create({
+            name: `Card: ${journal.name}`,
+            type: "script",
+            flags: {
+            "world": {
+                "card-id": `${journal.id}`,
+            }
+            },
+            scope: "global",
+            //Change first argument to "text" to show the journal entry as default.
+            //NOTE: In order for this macro to work (0.6.5 anyway) there MUST be text (content attribute must not be null).
+            command: `game.journal.get("${journal.id}").show("image", false);`,
+
+            img: `${game.journal.get(journal.id).data.img}`
+        }).then(macro => {
+            game.user.assignHotbarMacro(macro, ui.cardHotbar.getNextSlot());
+        });
+        console.debug(newMacro);
+    }
+        
+
     //TO DO: Create single chbGetMacro function for completeness and convenience.
     
     /**

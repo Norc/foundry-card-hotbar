@@ -409,6 +409,7 @@ export class cardHotbar extends Hotbar {
   /** @override */
   async _onDrop(event) {
     event.preventDefault();
+    console.debug(event);
     console.debug("card Hotbar | card-hotbar drop detected!");
     // Try to extract the data
     let data;
@@ -416,7 +417,8 @@ export class cardHotbar extends Hotbar {
       data = JSON.parse(event.dataTransfer.getData('text/plain'));
     }
     catch (err) { return }
-
+    console.debug(data);
+    
     // Get the drop target
     const li = event.target.closest(".macro");
 
