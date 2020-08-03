@@ -1,3 +1,5 @@
+import { Deck } from "../sdf-decks/scripts/deck.js";
+
 export class cardHotbar extends Hotbar {
     /**
      * @param {cardHotbarPopulator} populator
@@ -109,6 +111,9 @@ export class cardHotbar extends Hotbar {
       };
     });
   }
+
+  
+
 
 	/* -------------------------------------------- */
 
@@ -270,16 +275,13 @@ export class cardHotbar extends Hotbar {
         },
         callback: li => {
           const macro = game.macros.get(li.data("macro-id"));
-          Dialog.confirm({
-            title: `${game.i18n.localize("MACRO.Delete")} ${macro.name}`,
-            content: game.i18n.localize("MACRO.DeleteConfirm"),
-            yes:  () => {
-              macro.delete.bind(macro); 
-              game.journal.get(macro.getFlag("sdf-decks","card-id") ).folder;
-            }
-                  
-                  
-          });
+          const mCardId = macro.getFlag("world","card-id");
+          const mJournal = game.journal.get(mCardId);
+          const mDeck = game.decks.get(mJournal.data.folder);
+          console.debug("Card Hotbar | Discarding card...");
+          //this needs to be added as a function. getCardDeck needs to be added to decks API also.
+          mDeck.discardCard(mCardId);
+          macro.delete.bind(macro);
         }
       },
       {
@@ -311,20 +313,83 @@ export class cardHotbar extends Hotbar {
     ]);
   }
 
+      /* -------------------------------------------- */
+  /**
+   * Change the current deck to a deck that the user picks using a dialog
+   * @return {Promise}    A promise which resolves based on the user's selection
+   */
   swapDeck() {
     console.debug("Card Hotbar | Swapping current deck...");
-    let curDeck = game.decks.get("7OvuKjeNZPo1buEq");
-    let newDeck = game.decks.get("7OvuKjeNZPo1buEq");
-    game.user.unsetFlag("world","sdf-deck-current");
-    game.user.setFlag("world","sdf-deck-current", newDeck);
-    // create dropdown with contents of Object.keys(game.decks.decks)
+    return new Promise(resolve => {
+      let newDeck = "zyWWggP2LgFPj3Nv";
+      //let curDeck = "HawjSPEVGF5c43KA";
+      game.user.setFlag("world","sdf-deck-cur", newDeck);
+      // create dropdown with contents of Object.keys(game.decks.decks) (why not just game.decks?)
+      //Now I get "cannot read propert getFlag of Null"
+      resolve(true);
+    });
   }
 
+      /* -------------------------------------------- */
+  /**
+   * Reset a deck to its default state
+   * @return {Promise}    A promise which resolves once the deck is reset
+   */
+
   resetDeck() {
-    console.debug("Card Hotbar | Resetting current deck...");
-    let curDeck = game.decks.get("7OvuKjeNZPo1buEq");
-    //add confirmation dialog logic here
-    curDeck.resetDeck();    
+    let curDeck 
+    return new Promise(resolve => {
+      console.debug("Card Hotbar | Resetting current deck...");
+      let curDeck = game.decks.get(game.user.getFlag("world","sdf-deck-cur"));
+      //add confirmation dialog logic here
+      //run swapDeck first if no current deck defined.
+      curDeck.resetDeck();
+    resolve(true);
+    });  
+  }
+
+  
+      /* -------------------------------------------- */
+  /**
+   * Get the first available card slot and save it as a flag
+   * Saves the number of the first available slot to a flag and returns it
+   * Number is -1 if no slot is available.
+   * @return {number}   the slot number of the next avaialble card
+   */
+
+  getNextSlot() {
+    console.debug("Card Hotbar | Finding next available card slot");
+    let firstInactiveSlotNum = -1;
+    let slots = this.macros;
+
+    console.debug("Card Hotbar | Looping through all macros...")
+    for(let i = 1; i < slots.length; i++) { 
+      if(slots[i].cssClass == "next" ) {
+        game.user.setFlag("world","sdf-card-next-slot", i);
+        return i;
+      }
+
+      if(slots[i].cssClass == "inactive" && firstInactiveSlotNum != -1 ) {
+        game.user.setFlag("world","sdf-card-next-slot", i);
+        firstInactiveSlotNum = i;
+      }
+
+      //perform extra check if last or first slot
+      if( i == (this.macros.length -1) ) {
+        if(slots[0].cssClass == "next" ) {
+          game.user.setFlag("world","sdf-card-next-slot", 0);
+          return 0;
+        }
+        if(firstInactiveSlotNum == -1) {
+          game.user.setFlag("world","sdf-card-next-slot", firstInactiveSlotNum);
+          return firstInactiveSlotNum;
+        } else {
+          //Player hand is full, return error value
+          game.user.setFlag("world","sdf-card-next-slot", -1);
+          return -1;
+        }
+      }
+    }
   }
 
   	/* -------------------------------------------- */
