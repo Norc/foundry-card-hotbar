@@ -245,6 +245,7 @@ export class cardHotbar extends Hotbar {
         },
         callback: li => {
           const macro = game.macros.get(li.data("macro-id"));
+          console.debug("Card Hotbar | Revealing card...");
           //add code to show card's journal card here. Possibly submenu to select players.
         }
       },
@@ -261,7 +262,7 @@ export class cardHotbar extends Hotbar {
         }
       },
       {
-        name: "Delete From Hand",
+        name: "Discard",
         icon: '<i class="fas fa-trash"></i>',
         condition: li => {
           const macro = game.macros.get(li.data("macro-id"));
@@ -272,7 +273,12 @@ export class cardHotbar extends Hotbar {
           Dialog.confirm({
             title: `${game.i18n.localize("MACRO.Delete")} ${macro.name}`,
             content: game.i18n.localize("MACRO.DeleteConfirm"),
-            yes: macro.delete.bind(macro)
+            yes:  () => {
+              macro.delete.bind(macro); 
+              game.journal.get(macro.getFlag("sdf-decks","card-id") ).folder;
+            }
+                  
+                  
           });
         }
       },
@@ -285,7 +291,8 @@ export class cardHotbar extends Hotbar {
         },
         callback: li => {
           const macro = game.macros.get(li.data("macro-id"));
-          //code to draw card here
+          console.debug("Card Hotbar | Drawing 1 card...");
+          //code to draw card here - game.decks.get(deckid).drawCard()
         }
       },
       {
@@ -297,7 +304,8 @@ export class cardHotbar extends Hotbar {
         },
         callback: li => {
           const macro = game.macros.get(li.data("macro-id"));
-          //code to draw multiple card here
+          console.debug("Card Hotbar | Drawing multiple cards...");
+          //code to draw multiple card here - game.decks.get(deckid).drawCard() with loop and incrementing Next.
         }
       },
     ]);
@@ -305,12 +313,18 @@ export class cardHotbar extends Hotbar {
 
   swapDeck() {
     console.debug("Card Hotbar | Swapping current deck...");
-    //add deck swap logic here
+    let curDeck = game.decks.get("7OvuKjeNZPo1buEq");
+    let newDeck = game.decks.get("7OvuKjeNZPo1buEq");
+    game.user.unsetFlag("world","sdf-deck-current");
+    game.user.setFlag("world","sdf-deck-current", newDeck);
+    // create dropdown with contents of Object.keys(game.decks.decks)
   }
 
   resetDeck() {
     console.debug("Card Hotbar | Resetting current deck...");
-    //add deck reset logic here    
+    let curDeck = game.decks.get("7OvuKjeNZPo1buEq");
+    //add confirmation dialog logic here
+    curDeck.resetDeck();    
   }
 
   	/* -------------------------------------------- */
