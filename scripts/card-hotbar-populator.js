@@ -3,32 +3,49 @@ export class cardHotbarPopulator {
         this.macroMap = this.chbGetMacros();
     }
 
+    addToHand(cardIdArray) {
+        cardIdArray.forEach(this.addCardToHand);
+    }
+
     addCardToHand(cardId){
         console.debug("Card Hotbar | Adding card to hand...");
         //generate macro for card
         //TODO: better consolidate with code in index.js in hotbarDrop hook (call hook? make function at least?)
         // Make a new macro for the Journal
         let journal = game.journal.get(cardId);
-        let newMacro = Macro.create({
-            name: `Card: ${journal.name}`,
-            type: "script",
-            flags: {
-            "world": {
-                "card-id": `${journal.id}`,
-            }
-            },
-            scope: "global",
-            //Change first argument to "text" to show the journal entry as default.
-            //NOTE: In order for this macro to work (0.6.5 anyway) there MUST be text (content attribute must not be null).
-            command: `game.journal.get("${journal.id}").show("image", false);`,
+        if(game.user.getFlag("world","sdf-card-next-slot") !== -1 ) {
+            Macro.create({
+                name: `Card: ${journal.name}`,
+                type: "script",
+                flags: {
+                "world": {
+                    "card-id": `${journal.id}`,
+                }
+                },
+                scope: "global",
+                //Change first argument to "text" to show the journal entry as default.
+                //NOTE: In order for this macro to work (0.6.5 anyway) there MUST be text (content attribute must not be null).
+                command: `game.journal.get("${journal.id}").show("image", false);`,
 
-            img: `${game.journal.get(journal.id).data.img}`
-        }).then(macro => {
-            game.user.assignHotbarMacro(macro, ui.cardHotbar.getNextSlot());
-        });
-        console.debug(newMacro);
+                img: `${game.journal.get(journal.id).data.img}`
+            }).then(macro => {
+                console.debug( game.user.getFlag("world","sdf-card-next-slot") );
+                this.chbSetMacro(macro.id, game.user.getFlag("world","sdf-card-next-slot"));
+            });
+            return true;
+        } else {
+            ui.notifications.notify("Your hand of cards is already full.");
+            return false;
+        }
     }
-        
+    
+    /**
+     * Returns the first empty card slot number
+     * @return {number}
+     */
+    getNextCardSlot() {
+        return game.user.getFlag("world","sdf-card-next-slot");
+    }
 
     //TO DO: Create single chbGetMacro function for completeness and convenience.
     

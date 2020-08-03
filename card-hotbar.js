@@ -363,24 +363,26 @@ export class cardHotbar extends Hotbar {
     let slots = this.macros;
 
     console.debug("Card Hotbar | Looping through all macros...")
-    for(let i = 1; i < slots.length; i++) { 
-      if(slots[i].cssClass == "next" ) {
+    for(let i = 1; i <= slots.length; i++) { 
+      if(slots[i-1].cssClass == "next" ) {
         game.user.setFlag("world","sdf-card-next-slot", i);
         return i;
       }
 
-      if(slots[i].cssClass == "inactive" && firstInactiveSlotNum != -1 ) {
+      if(slots[i-1].cssClass == "inactive" && firstInactiveSlotNum != -1 ) {
         game.user.setFlag("world","sdf-card-next-slot", i);
         firstInactiveSlotNum = i;
       }
 
       //perform extra check if last or first slot
-      if( i == (this.macros.length -1) ) {
-        if(slots[0].cssClass == "next" ) {
+      console.debug(i);
+      console.debug(this.macros.length);
+      if( i == (this.macros.length) ) {
+        if(slots[9].cssClass == "next" ) {
           game.user.setFlag("world","sdf-card-next-slot", 0);
           return 0;
         }
-        if(firstInactiveSlotNum == -1) {
+        if(firstInactiveSlotNum != -1) {
           game.user.setFlag("world","sdf-card-next-slot", firstInactiveSlotNum);
           return firstInactiveSlotNum;
         } else {
@@ -418,7 +420,7 @@ export class cardHotbar extends Hotbar {
     }
     catch (err) { return }
     console.debug(data);
-    
+
     // Get the drop target
     const li = event.target.closest(".macro");
 

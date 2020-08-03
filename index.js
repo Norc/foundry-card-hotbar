@@ -133,6 +133,7 @@ Hooks.once('ready', () => {
 });
 
 Hooks.on('rendercardHotbar', async () => {
+  ui.cardHotbar.getNextSlot();
   console.debug("Card Hotbar | Card Hotbar rendered.");
 });
 
