@@ -30,7 +30,7 @@ export class cardHotbarPopulator {
                 img: `${game.journal.get(journal.id).data.img}`
             }).then(macro => {
                 console.debug( game.user.getFlag("world","sdf-card-next-slot") );
-                this.chbSetMacro(macro.id, game.user.getFlag("world","sdf-card-next-slot"));
+                window.cardHotbar.chbSetMacro(macro.id, game.user.getFlag("world","sdf-card-next-slot"));
             });
             return true;
         } else {
