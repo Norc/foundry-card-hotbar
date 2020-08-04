@@ -159,7 +159,7 @@ Hooks.on("hotbarDrop", (hotbar, data, slot) => {
       type: "script",
       flags: {
         "world": {
-          "card-id": `${journal.id}`,
+          "cardID": `${journal.id}`,
         }
       },
       scope: "global",
@@ -236,7 +236,7 @@ async function createTileFromItem(objId, x, y){
     height: _height * cardScale,
     flags: {
       "world": {
-        "card-id": `${objId}`,
+        "cardID": `${objId}`,
       }
     }
   })
