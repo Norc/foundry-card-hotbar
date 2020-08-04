@@ -10,43 +10,42 @@ export class cardHotbarPopulator {
 
     }
 
-    addCardToHand(cardId){
-        ui.cardHotbar.getNextSlot().then(addCard => {
-            console.debug("Card Hotbar | Adding card to hand...");
-            let nextSlot = game.user.getFlag("world","sdf-card-next-slot");
-            //enusre data is up to date
-    //        setTimeout(1000);
-            //generate macro for card
-            //TODO: better consolidate with code in index.js in hotbarDrop hook (call hook? make function at least?)
-            // Make a new macro for the Journal
-            let journal = game.journal.get(cardId);
-            console.debug(`Card Hotbar | nextSlot is ${nextSlot}`);
+    addCardToHand(cardId) {
+        let nextSlot = ui.cardHotbar.getNextSlot();
+        console.debug("Card Hotbar | Adding card to hand...");
+//        nextSlot = game.user.getFlag("world","sdf-card-next-slot");
+        //enusre data is up to date
+//        setTimeout(1000);
+        //generate macro for card
+        //TODO: better consolidate with code in index.js in hotbarDrop hook (call hook? make function at least?)
+        // Make a new macro for the Journal
+        let journal = game.journal.get(cardId);
+        console.debug(`Card Hotbar | nextSlot is ${nextSlot}`);
 
-            if( nextSlot !== -1 ) {
-                Macro.create({
-                    name: `Card: ${journal.name}`,
-                    type: "script",
-                    flags: {
-                    "world": {
-                        "card-id": `${journal.id}`,
-                    }
-                    },
-                    scope: "global",
-                    //Change first argument to "text" to show the journal entry as default.
-                    //NOTE: In order for this macro to work (0.6.5 anyway) there MUST be text (content attribute must not be null).
-                    command: `game.journal.get("${journal.id}").show("image", false);`,
+        if( nextSlot !== -1 ) {
+            Macro.create({
+                name: `Card: ${journal.name}`,
+                type: "script",
+                flags: {
+                "world": {
+                    "card-id": `${journal.id}`,
+                }
+                },
+                scope: "global",
+                //Change first argument to "text" to show the journal entry as default.
+                //NOTE: In order for this macro to work (0.6.5 anyway) there MUST be text (content attribute must not be null).
+                command: `game.journal.get("${journal.id}").show("image", false);`,
 
-                    img: `${game.journal.get(journal.id).data.img}`
-                }).then(macro => {
-                    window.cardHotbar.chbSetMacro(macro.id, nextSlot);
-    //                window.cardHotbar.chbSetMacros(window.cardHotbar.chbGetMacros());
-                    return ui.cardHotbar.render();
-                });
-            } else {
-                ui.notifications.notify("Your hand of cards is already full.");
-                return false;
-            }
-        });
+                img: `${game.journal.get(journal.id).data.img}`
+            }).then(macro => {
+                window.cardHotbar.chbSetMacro(macro.id, nextSlot);
+//                window.cardHotbar.chbSetMacros(window.cardHotbar.chbGetMacros());
+                return ui.cardHotbar.render();
+            });
+        } else {
+            ui.notifications.notify("Your hand of cards is already full.");
+            return false;
+        }
     }
     
     /**
