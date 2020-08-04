@@ -112,10 +112,10 @@ Hooks.on("renderHotbar", async () => {
   console.debug("Card Hotbar | The core hotbar just rendered!");
 });
 
-Hooks.on("rendercardHotbar", async () => {
+Hooks.on('rendercardHotbar', async () => {
+
   console.debug("Card Hotbar | The card hotbar just rendered!");
 });
-
 
 Hooks.once('ready', () => {
   console.debug("Card Hotbar | Foundry setup...");
@@ -129,14 +129,7 @@ Hooks.once('ready', () => {
     cardHotbarInit();
   }
 
-
 });
-
-Hooks.on('rendercardHotbar', async () => {
-  ui.cardHotbar.getNextSlot();
-  console.debug("Card Hotbar | Card Hotbar rendered.");
-});
-
 
 Hooks.on("renderSettingsConfig", async () => {
   //add CSS ids and classes to cardHotbar settings section for styling

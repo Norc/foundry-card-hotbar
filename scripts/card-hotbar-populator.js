@@ -4,11 +4,18 @@ export class cardHotbarPopulator {
     }
 
     addToHand(cardIdArray) {
-        cardIdArray.forEach(this.addCardToHand);
+        for (let i=0; i<cardIdArray.length; i++) {
+            this.addCardToHand(cardIdArray[i]);
+        }
+
     }
 
     addCardToHand(cardId){
         console.debug("Card Hotbar | Adding card to hand...");
+        //enusre data is up to date
+        ui.cardHotbar.getNextSlot();
+        setTimeout(1000);
+        console.debug(`Card Hotbar | Next slot is: ${game.user.getFlag("world","sdf-card-next-slot")}` );
         //generate macro for card
         //TODO: better consolidate with code in index.js in hotbarDrop hook (call hook? make function at least?)
         // Make a new macro for the Journal
@@ -29,10 +36,11 @@ export class cardHotbarPopulator {
 
                 img: `${game.journal.get(journal.id).data.img}`
             }).then(macro => {
-                console.debug( game.user.getFlag("world","sdf-card-next-slot") );
                 window.cardHotbar.chbSetMacro(macro.id, game.user.getFlag("world","sdf-card-next-slot"));
+                window.cardHotbar.macroMap = window.cardHotbar.chbGetMacros();
+                window.cardHotbar.chbSetMacros();
             });
-            return true;
+            return ui.cardHotbar.render();;
         } else {
             ui.notifications.notify("Your hand of cards is already full.");
             return false;
@@ -63,10 +71,10 @@ export class cardHotbarPopulator {
      * @param {number} slot 
      * @return {Promise<unknown>} Promise indicating whether the macro was set and the hotbar was rendered.
      */
-    async chbSetMacro(macroId, slot) {
+    chbSetMacro(macroId, slot) {
         console.debug("card Hotbar |", "Setting macro", slot, macroId);
         this.macroMap[slot] = macroId;
-        await this._updateFlags();
+        this._updateFlags();
         return ui.cardHotbar.render();
     }
 
