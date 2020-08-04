@@ -4,8 +4,9 @@ export class cardHotbarPopulator {
     }
 
     addToHand(cardIdArray) {
+        let add = false;
         for (let i=0; i<cardIdArray.length; i++) {
-            this.addCardToHand(cardIdArray[i]);
+            add = this.addCardToHand(cardIdArray[i]);
         }
 
     }
