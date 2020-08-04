@@ -357,12 +357,13 @@ export class cardHotbar extends Hotbar {
    * @return {number}   the slot number of the next avaialble card
    */
 
-  getNextSlot() {
+  async getNextSlot() {
     let firstInactiveSlotNum = -1;
     //ui.cardHotbar.macros = ui.cardHotbar.getcardHotbarMacros(1);
-    let macs = ui.cardHotbar.macros.macros;
+    let macs = ui.cardHotbar.macros;
     console.debug(macs);
     console.debug("Card Hotbar | Setting next slot value...")
+    game.user.unsetFlag("world","sdf-card-next-slot");
     for(let i = 0; i < macs.length; i++) { 
       console.debug(i);
       console.debug(macs[i].cssClass);

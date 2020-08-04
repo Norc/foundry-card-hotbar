@@ -11,40 +11,43 @@ export class cardHotbarPopulator {
     }
 
     addCardToHand(cardId){
-        console.debug("Card Hotbar | Adding card to hand...");
-        //enusre data is up to date
-        ui.cardHotbar.getNextSlot();
-        setTimeout(1000);
-        console.debug(`Card Hotbar | Next slot is: ${game.user.getFlag("world","sdf-card-next-slot")}` );
-        //generate macro for card
-        //TODO: better consolidate with code in index.js in hotbarDrop hook (call hook? make function at least?)
-        // Make a new macro for the Journal
-        let journal = game.journal.get(cardId);
-        if(game.user.getFlag("world","sdf-card-next-slot") !== -1 ) {
-            Macro.create({
-                name: `Card: ${journal.name}`,
-                type: "script",
-                flags: {
-                "world": {
-                    "card-id": `${journal.id}`,
-                }
-                },
-                scope: "global",
-                //Change first argument to "text" to show the journal entry as default.
-                //NOTE: In order for this macro to work (0.6.5 anyway) there MUST be text (content attribute must not be null).
-                command: `game.journal.get("${journal.id}").show("image", false);`,
+        ui.cardHotbar.getNextSlot().then(addCard => {
+            console.debug("Card Hotbar | Adding card to hand...");
+            let nextSlot = game.user.getFlag("world","sdf-card-next-slot");
+            //enusre data is up to date
+    //        setTimeout(1000);
+            //generate macro for card
+            //TODO: better consolidate with code in index.js in hotbarDrop hook (call hook? make function at least?)
+            // Make a new macro for the Journal
+            let journal = game.journal.get(cardId);
+            console.debug(`Card Hotbar | nextSlot is ${nextSlot}`);
 
-                img: `${game.journal.get(journal.id).data.img}`
-            }).then(macro => {
-                window.cardHotbar.chbSetMacro(macro.id, game.user.getFlag("world","sdf-card-next-slot"));
-                window.cardHotbar.macroMap = window.cardHotbar.chbGetMacros();
-                window.cardHotbar.chbSetMacros();
-            });
-            return ui.cardHotbar.render();;
-        } else {
-            ui.notifications.notify("Your hand of cards is already full.");
-            return false;
-        }
+            if( nextSlot !== -1 ) {
+                Macro.create({
+                    name: `Card: ${journal.name}`,
+                    type: "script",
+                    flags: {
+                    "world": {
+                        "card-id": `${journal.id}`,
+                    }
+                    },
+                    scope: "global",
+                    //Change first argument to "text" to show the journal entry as default.
+                    //NOTE: In order for this macro to work (0.6.5 anyway) there MUST be text (content attribute must not be null).
+                    command: `game.journal.get("${journal.id}").show("image", false);`,
+
+                    img: `${game.journal.get(journal.id).data.img}`
+                }).then(macro => {
+                    console.debug(`Card Hotbar | Next slot is: ${nextSlot}` );
+                    window.cardHotbar.chbSetMacro(macro.id, nextSlot);
+    //                window.cardHotbar.chbSetMacros(window.cardHotbar.chbGetMacros());
+                    return ui.cardHotbar.render();;
+                });
+            } else {
+                ui.notifications.notify("Your hand of cards is already full.");
+                return false;
+            }
+        });
     }
     
     /**

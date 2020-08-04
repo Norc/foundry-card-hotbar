@@ -95,7 +95,8 @@ async function cardHotbarInit() {
   })
 */
 
-  await ui.cardHotbar.render(true, obj);
+  ui.cardHotbar.render(true, obj);
+  ui.cardHotbar.getNextSlot();
 }
 
 
@@ -113,7 +114,6 @@ Hooks.on("renderHotbar", async () => {
 });
 
 Hooks.on('rendercardHotbar', async () => {
-
   console.debug("Card Hotbar | The card hotbar just rendered!");
 });
 
