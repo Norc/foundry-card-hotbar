@@ -285,7 +285,7 @@ export class cardHotbar extends Hotbar {
           console.debug("Card Hotbar | Discarding card...");
           //this needs to be added as a function. getCardDeck needs to be added to decks API also.
           mDeck.discardCard(mCardId);
-          macro.delete.bind(macro);
+          macro.delete();
         }
       },
       {
