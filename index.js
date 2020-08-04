@@ -6,7 +6,7 @@ async function cardHotbarInit() {
   console.debug("Card Hotbar | Initializing...");
   window.cardHotbar = new cardHotbarPopulator();
   ui.cardHotbar = new cardHotbar(window.cardHotbar);
-  ui.cardHotbar.macros = ui.cardHotbar.getData();
+  //ui.cardHotbar = ui.cardHotbar.getData(options);
   let obj = {
       left: 100,
       top: 100,

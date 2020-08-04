@@ -6,8 +6,8 @@ export class cardHotbar extends Hotbar {
      * @param {*} options 
      */
   constructor(populator, options) {
-    super(Hotbar);
-    //super(options);
+  //  super(Hotbar);
+    super(options);
     game.macros.apps.push(this);
     /**
      * The currently viewed macro page
