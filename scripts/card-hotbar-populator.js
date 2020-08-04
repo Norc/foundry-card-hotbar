@@ -38,10 +38,9 @@ export class cardHotbarPopulator {
 
                     img: `${game.journal.get(journal.id).data.img}`
                 }).then(macro => {
-                    console.debug(`Card Hotbar | Next slot is: ${nextSlot}` );
                     window.cardHotbar.chbSetMacro(macro.id, nextSlot);
     //                window.cardHotbar.chbSetMacros(window.cardHotbar.chbGetMacros());
-                    return ui.cardHotbar.render();;
+                    return ui.cardHotbar.render();
                 });
             } else {
                 ui.notifications.notify("Your hand of cards is already full.");
