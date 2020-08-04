@@ -276,7 +276,7 @@ export class cardHotbar extends Hotbar {
         callback: li => {
           const macro = game.macros.get(li.data("macro-id"));
           console.debug(macro);
-          const mCardId = macro.getFlag("world","card-id");
+          const mCardId = macro.getFlag("world","cardID");
           console.debug(mCardId);
           const mJournal = game.journal.get(mCardId);
           console.debug(mJournal);

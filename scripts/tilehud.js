@@ -11,7 +11,7 @@ Hooks.on('renderTileHUD', (tileHUD, html, options) => {
   let tileH = tileHUD.object.data.height 
   */
 
-  let cardId = options.flags?.world['card-id'];
+  let cardId = options.flags?.world['cardID'];
   if(!cardId){return;}
 
   const handDiv = $('<i class="control-icon fa fa-hand-paper" aria-hidden="true" title="Take"></i>')

@@ -197,7 +197,7 @@ Hooks.once("canvasReady", (_) => {
       data = JSON.parse(event.dataTransfer.getData("text/plain"));
       if(data.type == "Folder"){return;}
       let m = game.macros.get(data.id);
-      let je = game.journal.get( m.getFlag("world", "card-id") );  
+      let je = game.journal.get( m.getFlag("world", "cardID") );  
       console.debug("Card Hotbar | Canvas drop detected");
       console.debug(event);
       console.debug(data);

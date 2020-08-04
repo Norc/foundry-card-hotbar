@@ -29,7 +29,7 @@ export class cardHotbarPopulator {
                 type: "script",
                 flags: {
                 "world": {
-                    "card-id": `${journal.id}`,
+                    "cardID": `${journal.id}`,
                 }
                 },
                 scope: "global",
