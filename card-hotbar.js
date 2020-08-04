@@ -381,7 +381,7 @@ export class cardHotbar extends Hotbar {
       }
 
       //perform extra check if last slot
-      if( i == (macs.length) ) {
+      if( i == (macs.length-1) ) {
         //no next was present for some reason, but there's still a blank slot
         if(macs[i].cssClass != "next" && firstInactiveSlotNum != -1) {
           console.debug(`Card Hotbar | i is ${i}, cssClass is ${macs[i].cssClass}. Case: No "next" was found but there is an inactive. Returning slot ${firstInactiveSlotNum}.`);
