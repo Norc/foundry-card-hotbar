@@ -23,7 +23,7 @@ export class cardHotbar extends Hotbar {
      * Track collapsed state
      * @type {boolean}
      */
-    this._collapsed = true;
+    this._collapsed = false;
     /**
      * Track which hotbar slot is the current hover target, if any
      * @type {number|null}

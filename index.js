@@ -109,14 +109,6 @@ Hooks.once("init", async () => {
   };
 });
 
-Hooks.on("renderHotbar", async () => {
-  console.debug("Card Hotbar | The core hotbar just rendered!");
-});
-
-Hooks.on('rendercardHotbar', async () => {
-  console.debug("Card Hotbar | The card hotbar just rendered!");
-});
-
 Hooks.once('ready', () => {
   console.debug("Card Hotbar | Foundry setup...");
 
@@ -180,6 +172,19 @@ Hooks.on("hotbarDrop", (hotbar, data, slot) => {
       game.user.assignHotbarMacro(macro, slot);
   });
   return false;
+});
+
+Hooks.once('rendercardHotbar', () => {
+  console.debug("Card Hotbar | Performing initial collapse");
+  ui.cardHotbar.collapse();
+});
+
+Hooks.on("renderHotbar", async () => {
+  console.debug("Card Hotbar | The core hotbar just rendered!");
+});
+
+Hooks.on('rendercardHotbar', async () => {
+  console.debug("Card Hotbar | The card hotbar just rendered!");
 });
 
 // Add the listener to the board html element
