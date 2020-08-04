@@ -4,16 +4,25 @@ export class cardHotbarPopulator {
     }
 
     addToHand(cardIdArray) {
-        cardIdArray.forEach(this.addCardToHand);
+        for (let i=0; i<cardIdArray.length; i++) {
+            this.addCardToHand(cardIdArray[i]);
+        }
+
     }
 
-    addCardToHand(cardId){
+    addCardToHand(cardId) {
+        let nextSlot = ui.cardHotbar.getNextSlot();
         console.debug("Card Hotbar | Adding card to hand...");
+//        nextSlot = game.user.getFlag("world","sdf-card-next-slot");
+        //enusre data is up to date
+//        setTimeout(1000);
         //generate macro for card
         //TODO: better consolidate with code in index.js in hotbarDrop hook (call hook? make function at least?)
         // Make a new macro for the Journal
         let journal = game.journal.get(cardId);
-        if(game.user.getFlag("world","sdf-card-next-slot") !== -1 ) {
+        console.debug(`Card Hotbar | nextSlot is ${nextSlot}`);
+
+        if( nextSlot !== -1 ) {
             Macro.create({
                 name: `Card: ${journal.name}`,
                 type: "script",
@@ -29,10 +38,10 @@ export class cardHotbarPopulator {
 
                 img: `${game.journal.get(journal.id).data.img}`
             }).then(macro => {
-                console.debug( game.user.getFlag("world","sdf-card-next-slot") );
-                window.cardHotbar.chbSetMacro(macro.id, game.user.getFlag("world","sdf-card-next-slot"));
+                window.cardHotbar.chbSetMacro(macro.id, nextSlot);
+//                window.cardHotbar.chbSetMacros(window.cardHotbar.chbGetMacros());
+                return ui.cardHotbar.render();
             });
-            return true;
         } else {
             ui.notifications.notify("Your hand of cards is already full.");
             return false;
@@ -63,11 +72,13 @@ export class cardHotbarPopulator {
      * @param {number} slot 
      * @return {Promise<unknown>} Promise indicating whether the macro was set and the hotbar was rendered.
      */
-    async chbSetMacro(macroId, slot) {
+    chbSetMacro(macroId, slot) {
         console.debug("card Hotbar |", "Setting macro", slot, macroId);
         this.macroMap[slot] = macroId;
-        await this._updateFlags();
-        return ui.cardHotbar.render();
+        ui.cardHotbar.getcardHotbarMacros();
+        this._updateFlags().then(render => { 
+            return ui.cardHotbar.render();
+        });
     }
 
     /**

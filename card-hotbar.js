@@ -128,7 +128,7 @@ export class cardHotbar extends Hotbar {
   async assigncardHotbarMacro(macro, slot, {fromSlot=null}={}) {
     console.debug("card Hotbar | assigncardHotbarMarcro", macro, slot, fromSlot);
     if ( !(macro instanceof Macro) && (macro !== null) ) throw new Error("Invalid Macro provided");
-    // const chbMacros = this.populator.chbGetMacros();
+//    const chbMacros = this.populator.chbGetMacros();
 
     // If a slot was not provided, get the first available slot
     slot = slot ? parseInt(slot) : Array.fromRange(10).find(i => !(i in ui.cardHotbar));
@@ -357,38 +357,43 @@ export class cardHotbar extends Hotbar {
    * @return {number}   the slot number of the next avaialble card
    */
 
-  getNextSlot() {
-    console.debug("Card Hotbar | Finding next available card slot");
+   //write some sort of hookscall all... setting the nextslot flag is taking too long?
+   //or is it that setFlag fails every OTHER time? the hell?
+    getNextSlot() {
     let firstInactiveSlotNum = -1;
-    let slots = this.macros;
-
-    console.debug("Card Hotbar | Looping through all macros...")
-    for(let i = 1; i <= slots.length; i++) { 
-      if(slots[i-1].cssClass == "next" ) {
-        game.user.setFlag("world","sdf-card-next-slot", i);
-        return i;
-      }
-
-      if(slots[i-1].cssClass == "inactive" && firstInactiveSlotNum != -1 ) {
-        game.user.setFlag("world","sdf-card-next-slot", i);
-        firstInactiveSlotNum = i;
-      }
-
-      //perform extra check if last or first slot
+    //ui.cardHotbar.macros = ui.cardHotbar.getcardHotbarMacros(1);
+    let macs = duplicate(ui.cardHotbar.macros);
+    console.debug("Card Hotbar | macs is");
+    console.debug(macs);
+    console.debug("Card Hotbar | Setting next slot value..."); 
+    for(let i = 0; i < macs.length; i++) { 
       console.debug(i);
-      console.debug(this.macros.length);
-      if( i == (this.macros.length) ) {
-        if(slots[9].cssClass == "next" ) {
-          game.user.setFlag("world","sdf-card-next-slot", 0);
-          return 0;
-        }
-        if(firstInactiveSlotNum != -1) {
+      console.debug(macs[i].cssClass);
+      if(macs[i].cssClass == "next" ) {
+        console.debug(`Card Hotbar | i is ${i}, slot ${macs[i].slot}, cssClass ${macs[i].cssClass}. Case: Standard. Returning slot (i+1)`);
+        game.user.unsetFlag("world","sdf-card-next-slot");
+        game.user.setFlag("world","sdf-card-next-slot", (i+1) );
+        return (i+1);
+      }
+
+      if(macs[i].cssClass == "inactive" && firstInactiveSlotNum == -1 ) {
+        firstInactiveSlotNum = i+1;
+      }
+
+      //perform extra check if last slot
+      if( i == (macs.length-1) ) {
+        //no next was present for some reason, but there's still a blank slot
+        if(macs[i].cssClass != "next" && firstInactiveSlotNum != -1) {
+          console.debug(`Card Hotbar | i is ${i}, cssClass is ${macs[i].cssClass}. Case: No "next" was found but there is an inactive. Returning slot ${firstInactiveSlotNum}.`);
+          game.user.unsetFlag("world","sdf-card-next-slot");
           game.user.setFlag("world","sdf-card-next-slot", firstInactiveSlotNum);
           return firstInactiveSlotNum;
         } else {
           //Player hand is full, return error value
+          console.debug(`Card Hotbar | i is ${i}, cssClass is ${macs[i].cssClass}. Case: hand is full, return error}.`);
+          game.user.unsetFlag("world","sdf-card-next-slot");
           game.user.setFlag("world","sdf-card-next-slot", -1);
-          return -1;
+          return -1; 
         }
       }
     }
@@ -573,7 +578,7 @@ export class cardHotbar extends Hotbar {
 
     // Handle hover-in
     if ( event.type === "mouseenter" ) {
-      console.debug("card Hotbar | Macro tooltip override fired!");
+//      console.debug("card Hotbar | Macro tooltip override fired!");
       this._hover = li.dataset.slot;
       if ( hasAction ) {
         const macro = game.macros.get(li.dataset.macroId);
@@ -594,7 +599,6 @@ export class cardHotbar extends Hotbar {
 
     // Handle hover-out
     else {
-      console.debug("card Hotbar | Mouse out!");
       this._hover = null;
     }
   }
