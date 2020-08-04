@@ -128,7 +128,7 @@ export class cardHotbar extends Hotbar {
   async assigncardHotbarMacro(macro, slot, {fromSlot=null}={}) {
     console.debug("card Hotbar | assigncardHotbarMarcro", macro, slot, fromSlot);
     if ( !(macro instanceof Macro) && (macro !== null) ) throw new Error("Invalid Macro provided");
-    // const chbMacros = this.populator.chbGetMacros();
+//    const chbMacros = this.populator.chbGetMacros();
 
     // If a slot was not provided, get the first available slot
     slot = slot ? parseInt(slot) : Array.fromRange(10).find(i => !(i in ui.cardHotbar));
@@ -363,7 +363,6 @@ export class cardHotbar extends Hotbar {
     let macs = ui.cardHotbar.macros;
     console.debug(macs);
     console.debug("Card Hotbar | Setting next slot value...")
-    game.user.unsetFlag("world","sdf-card-next-slot");
     for(let i = 0; i < macs.length; i++) { 
       console.debug(i);
       console.debug(macs[i].cssClass);

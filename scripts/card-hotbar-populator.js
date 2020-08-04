@@ -77,8 +77,10 @@ export class cardHotbarPopulator {
     chbSetMacro(macroId, slot) {
         console.debug("card Hotbar |", "Setting macro", slot, macroId);
         this.macroMap[slot] = macroId;
-        this._updateFlags();
-        return ui.cardHotbar.render();
+        ui.cardHotbar.getcardHotbarMacros();
+        this._updateFlags().then(render => { 
+            return ui.cardHotbar.render();
+        });
     }
 
     /**
