@@ -3,16 +3,16 @@ export class cardHotbarPopulator {
         this.macroMap = this.chbGetMacros();
     }
 
-    addToHand(cardIdArray) {
-        let add = false;
+    async addToHand(cardIdArray) {
+        let added = false;
         for (let i=0; i<cardIdArray.length; i++) {
-            add = this.addCardToHand(cardIdArray[i]);
+            added = await this.addCardToHand(cardIdArray[i]);
         }
 
     }
 
-    addCardToHand(cardId) {
-        let nextSlot = ui.cardHotbar.getNextSlot();
+    async addToHand(cardId) {
+        let nextSlot = await ui.cardHotbar.getNextSlot();
         console.debug("Card Hotbar | Adding card to hand...");
 //        nextSlot = game.user.getFlag("world","sdf-card-next-slot");
         //enusre data is up to date

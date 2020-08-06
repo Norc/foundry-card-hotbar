@@ -363,20 +363,20 @@ export class cardHotbar extends Hotbar {
 
    //write some sort of hookscall all... setting the nextslot flag is taking too long?
    //or is it that setFlag fails every OTHER time? the hell?
-    getNextSlot() {
+    async getNextSlot() {
     let firstInactiveSlotNum = -1;
     //ui.cardHotbar.macros = ui.cardHotbar.getcardHotbarMacros(1);
     let macs = duplicate(ui.cardHotbar.macros);
     console.debug("Card Hotbar | macs is");
     console.debug(macs);
     console.debug("Card Hotbar | Setting next slot value..."); 
+    await game.user.unsetFlag("world","sdf-card-next-slot");
     for(let i = 0; i < macs.length; i++) { 
       console.debug(i);
       console.debug(macs[i].cssClass);
       if(macs[i].cssClass == "next" ) {
         console.debug(`Card Hotbar | i is ${i}, slot ${macs[i].slot}, cssClass ${macs[i].cssClass}. Case: Standard. Returning slot (i+1)`);
-        game.user.unsetFlag("world","sdf-card-next-slot");
-        game.user.setFlag("world","sdf-card-next-slot", (i+1) );
+        await game.user.setFlag("world","sdf-card-next-slot", (i+1) );
         return (i+1);
       }
 
@@ -389,14 +389,12 @@ export class cardHotbar extends Hotbar {
         //no next was present for some reason, but there's still a blank slot
         if(macs[i].cssClass != "next" && firstInactiveSlotNum != -1) {
           console.debug(`Card Hotbar | i is ${i}, cssClass is ${macs[i].cssClass}. Case: No "next" was found but there is an inactive. Returning slot ${firstInactiveSlotNum}.`);
-          game.user.unsetFlag("world","sdf-card-next-slot");
-          game.user.setFlag("world","sdf-card-next-slot", firstInactiveSlotNum);
+          await game.user.setFlag("world","sdf-card-next-slot", firstInactiveSlotNum);
           return firstInactiveSlotNum;
         } else {
           //Player hand is full, return error value
           console.debug(`Card Hotbar | i is ${i}, cssClass is ${macs[i].cssClass}. Case: hand is full, return error}.`);
-          game.user.unsetFlag("world","sdf-card-next-slot");
-          game.user.setFlag("world","sdf-card-next-slot", -1);
+          await game.user.setFlag("world","sdf-card-next-slot", -1);
           return -1; 
         }
       }
